@@ -1,11 +1,4 @@
 
-from me - grab csv of station data from diablo_stations.csv 
-
-from john want
-wd, in addition to ws, or u_ws and v_ws
-rh, instead of t2 and td2
-
-
 ###############################################################################
 # process_offshore_hits.py
 # purpose: compute offshore wind events days in No CA 
@@ -63,29 +56,12 @@ dir_work = dir_scripts
 os.chdir(dir_scripts)
     
 sys.path.append(os.path.join(dir_scripts))
-sys.path.append(os.path.join(dir_base, 'scripts' ,'function_library'))
+#sys.path.append(os.path.join(dir_base, 'scripts' ,'function_library'))
 from define_daylight_savings_or_not   import define_daylight_savings_or_not
 from instantiate_logger               import instantiate_logger
 from define_datetime_axis import define_datetime_axis
 from read_stn_metadata_from_csv import read_stn_metadata_from_csv
 from map_stn_locations_to_grid_locations import map_stn_locations_to_grid_locations
-
-#from function_library import instantiate_logger 
-#from function_library import email_job_results 
-#from function_library import define_daylight_savings_or_not
-#from function_library import parse_firms_command_line_options
-#from function_library import datetime_round_down_to_start_of_day
-#from function_library import decompose_datetime_list
-#from function_library import read_firms_data
-
-#from function_library import read_wrf_profile_during_run
-#from function_library import read_sfc_obs_mesowest_api
-#from function_library import read_stn_metadata 
-#from function_library import datematch_two_timeseries 
-#from function_library import datematch_two_timeseries_multidimensional
-#from function_library import convert_vel_to_dir
-#from function_library import decompose_datetime_list
-#from function_library import calc_skill
 
 # module import and set paths
 ###############################################################################
@@ -110,7 +86,6 @@ print      ('define_cron_start_time ')
 dt_cron_start_utc = dt.utcnow()    
 dt_cron_start_lt = dt.now() # cluster time is LST 
           
-
 # define starting time 
 ###############################################################################
 
@@ -131,11 +106,6 @@ logger = instantiate_logger(log_name, dt_cron_start_lt)
 # instantiate logger 
 ###############################################################################
 
-# instantiate logger 
-###############################################################################
-
-
-
 
 ###############################################################################
 # plot_time_series
@@ -145,10 +115,19 @@ plot_time_series = True
 if (plot_time_series):
 
     file_name_base = 'era5_canv_'
-    #yy_new = 2011    
+    #yy_new = 2011
+    #dt_min_plot = dt(2011, 11, 25)
+    #dt_max_plot = dt(2011, 12,  6)
     #yy_new = 2013    
+    #dt_min_plot = dt(2013, 11, 20)
+    #dt_max_plot = dt(2013, 11, 30)
     #yy_new = 2017    
-    yy_new = 2018    
+    #dt_min_plot = dt(2017, 10, 6)
+    #dt_max_plot = dt(2017, 10, 13)
+    yy_new = 2018   
+    dt_min_plot = dt(2018, 11, 5)
+    dt_max_plot = dt(2018, 11, 16)
+    
     file_name_tair = os.path.join(dir_data, file_name_base+'tair_'+str(yy_new)+'.nc')
     file_name_tdew = os.path.join(dir_data, file_name_base+'tdew_'+str(yy_new)+'.nc')
     file_name_ws   = os.path.join(dir_data, file_name_base+'vs_'+str(yy_new)+'.nc')
@@ -186,20 +165,26 @@ if (plot_time_series):
     
     hr_read = numpy.array(ncfile_read['day'])
     numpy.shape(hr_read)
-    hr_read = hr_read - hr_read[0]
     n_hrs = len(hr_read)
+    # hours since 1900-01-01
+    #hr_read = hr_read - hr_read[0]
     dt_hr_utc = numpy.full([n_hrs], numpy.nan, dtype=object)
-    dt_hr_utc[0] = dt(yy_new, 1, 1, 0, 0, 0)
+    #dt_hr_utc[0] = dt(yy_new, 1, 1, 0, 0, 0)
+    #for hr in range(0, n_hrs, 1):
+    #    dt_hr_utc[hr] = dt_hr_utc[0] + td(hours=hr)
     for hr in range(0, n_hrs, 1):
-        dt_hr_utc[hr] = dt_hr_utc[0] + td(hours=hr)
+        dt_hr_utc[hr] = dt(1900, 1, 1) + td(hours=hr_read[hr])
     dt_hr_pst = dt_hr_utc - td(utc_conversion)
         
     ncfile_read.close()
     
     # compute rh
-    es_hr_2d = 6.11*10.0**((7.5* t2_hr_2d)/(237.7+ t2_hr_2d))
-    e_hr_2d  = 6.11*10.0**((7.5*td2_hr_2d)/(237.7+td2_hr_2d))
-    rh2_hr_2d = 100.0*(e_hr_2d/es_hr_2d)
+    es_hr_2d = 6.11*numpy.exp((7.5* t2_hr_2d)/(237.7+ t2_hr_2d))
+    e_hr_2d  = 6.11*numpy.exp((7.5*td2_hr_2d)/(237.7+td2_hr_2d))
+    rh2_hr_2d = 100.0 - 100.0*(e_hr_2d/es_hr_2d)
+    #es_hr_2d  = 6.11*10.0**((7.5* t2_hr_2d)/(237.7+ t2_hr_2d))
+    #e_hr_2d = 6.11*10.0**((7.5*td2_hr_2d)/(237.7+td2_hr_2d))
+    #rh2_hr_2d = 100.0 - 100.0*(e_hr_2d/es_hr_2d)
     del es_hr_2d, e_hr_2d
 
     
@@ -214,32 +199,19 @@ if (plot_time_series):
     print_flag = True
     (j_loc_s, i_loc_s) = map_stn_locations_to_grid_locations(logger, dict_stn_metadata, lon_2d, lat_2d, print_flag)
 
-    ws10_hr_s = ws10_hr_2d[:,i_loc_s,j_loc_s]
-    wd10_hr_s = wd10_hr_2d[:,i_loc_s,j_loc_s]
-    rh2_hr_s  = rh2_hr_2d [:,i_loc_s,j_loc_s]
-    #ws10_hr_s = ws10_hr_2d[:,j_loc_s,i_loc_s]
-    #wd10_hr_s = wd10_hr_2d[:,j_loc_s,i_loc_s]
-    #rh2_hr_s  = rh2_hr_2d [:,j_loc_s,i_loc_s]
+    #ws10_hr_s = ws10_hr_2d[:,i_loc_s,j_loc_s]
+    #wd10_hr_s = wd10_hr_2d[:,i_loc_s,j_loc_s]
+    #rh2_hr_s  = rh2_hr_2d [:,i_loc_s,j_loc_s]
+    ws10_hr_s = ws10_hr_2d[:,j_loc_s,i_loc_s]
+    wd10_hr_s = wd10_hr_2d[:,j_loc_s,i_loc_s]
+    rh2_hr_s  = rh2_hr_2d [:,j_loc_s,i_loc_s]
     
     
-
-
-
-    #dt_min_plot = dt(2011, 11, 25)
-    #dt_max_plot = dt(2011, 12,  6)
-    #dt_min_plot = dt(2013, 11, 20)
-    #dt_max_plot = dt(2013, 11, 30)
-    #dt_min_plot = dt(2017, 10, 6)
-    #dt_max_plot = dt(2017, 10, 13)
-    dt_min_plot = dt(2018, 11, 1)
-    dt_max_plot = dt(2018, 11, 15)
     
     
     n_days_temp = (dt_max_plot - dt_min_plot).days 
-    
     delta = td(hours=24)
     delta_lines = td(hours=24)
-    
     datetick_format = '%m/%d %H'    
     #datetick_format = '%H'    
     #if (date_temp.hour  == 0):
@@ -282,7 +254,7 @@ if (plot_time_series):
     
     ##############################################
     # ws bay, ws sierra, rh bay rh sierra all stns  
-    fig_num = 151
+    fig_num = 152
     fig = plt.figure(num=fig_num,figsize=(10,7)) # 10,10 
     plt.clf()
     
