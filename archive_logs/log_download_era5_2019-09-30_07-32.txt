@@ -1,0 +1,73 @@
+###############################################################################
+instantiate_logger at 2019-09-30_07-32 
+instantiate_logger log_name is log_download_era5_2019-09-30_07-32.txt 
+authenticate token begin 
+      wget_command is wget $cert_opt -O auth_status.rda.ucar.edu --save-cookies /home/craigmatthewsmith/offshore_winds/offshore_winds/auth.rda.ucar.edu.$$ --post-data="email=craig.matthew.smith@gmail.com&passwd=cs4024&action=login" https://rda.ucar.edu/cgi-bin/login 
+  download_grib: authenticate token end  
+      auth_file is /home/craigmatthewsmith/offshore_winds/offshore_winds/auth.rda.ucar.edu.10517 
+auth is /home/craigmatthewsmith/offshore_winds/offshore_winds/auth.rda.ucar.edu.10517 
+  download_grib: download url_list begin 
+      download f 0 of 30 
+      wget_command is wget $cert_opt $opts --load-cookies /home/craigmatthewsmith/offshore_winds/offshore_winds/auth.rda.ucar.edu.10517 e5.oper.an.sfc/197901/e5.oper.an.sfc.128_165_10u.ll025sc.1979010100_1979013123.nc 
+      download f 1 of 30 
+      wget_command is wget $cert_opt $opts --load-cookies /home/craigmatthewsmith/offshore_winds/offshore_winds/auth.rda.ucar.edu.10517 e5.oper.an.sfc/197901/e5.oper.an.sfc.128_166_10v.ll025sc.1979010100_1979013123.nc 
+      download f 2 of 30 
+      wget_command is wget $cert_opt $opts --load-cookies /home/craigmatthewsmith/offshore_winds/offshore_winds/auth.rda.ucar.edu.10517 e5.oper.an.sfc/197901/e5.oper.an.sfc.128_167_2t.ll025sc.1979010100_1979013123.nc 
+      download f 3 of 30 
+      wget_command is wget $cert_opt $opts --load-cookies /home/craigmatthewsmith/offshore_winds/offshore_winds/auth.rda.ucar.edu.10517 e5.oper.an.sfc/197901/e5.oper.an.sfc.128_168_2d.ll025sc.1979010100_1979013123.nc 
+      download f 4 of 30 
+      wget_command is wget $cert_opt $opts --load-cookies /home/craigmatthewsmith/offshore_winds/offshore_winds/auth.rda.ucar.edu.10517 e5.oper.an.sfc/197902/e5.oper.an.sfc.128_165_10u.ll025sc.1979020100_1979022823.nc 
+      download f 5 of 30 
+      wget_command is wget $cert_opt $opts --load-cookies /home/craigmatthewsmith/offshore_winds/offshore_winds/auth.rda.ucar.edu.10517 e5.oper.an.sfc/197902/e5.oper.an.sfc.128_166_10v.ll025sc.1979020100_1979022823.nc 
+      download f 6 of 30 
+      wget_command is wget $cert_opt $opts --load-cookies /home/craigmatthewsmith/offshore_winds/offshore_winds/auth.rda.ucar.edu.10517 e5.oper.an.sfc/197902/e5.oper.an.sfc.128_167_2t.ll025sc.1979020100_1979022823.nc 
+      download f 7 of 30 
+      wget_command is wget $cert_opt $opts --load-cookies /home/craigmatthewsmith/offshore_winds/offshore_winds/auth.rda.ucar.edu.10517 e5.oper.an.sfc/197902/e5.oper.an.sfc.128_168_2d.ll025sc.1979020100_1979022823.nc 
+      download f 8 of 30 
+      wget_command is wget $cert_opt $opts --load-cookies /home/craigmatthewsmith/offshore_winds/offshore_winds/auth.rda.ucar.edu.10517 e5.oper.an.sfc/197903/e5.oper.an.sfc.128_165_10u.ll025sc.1979030100_1979033123.nc 
+      download f 9 of 30 
+      wget_command is wget $cert_opt $opts --load-cookies /home/craigmatthewsmith/offshore_winds/offshore_winds/auth.rda.ucar.edu.10517 e5.oper.an.sfc/197903/e5.oper.an.sfc.128_166_10v.ll025sc.1979030100_1979033123.nc 
+      download f 10 of 30 
+      wget_command is wget $cert_opt $opts --load-cookies /home/craigmatthewsmith/offshore_winds/offshore_winds/auth.rda.ucar.edu.10517 e5.oper.an.sfc/197903/e5.oper.an.sfc.128_167_2t.ll025sc.1979030100_1979033123.nc 
+      download f 11 of 30 
+      wget_command is wget $cert_opt $opts --load-cookies /home/craigmatthewsmith/offshore_winds/offshore_winds/auth.rda.ucar.edu.10517 e5.oper.an.sfc/197903/e5.oper.an.sfc.128_168_2d.ll025sc.1979030100_1979033123.nc 
+      download f 12 of 30 
+      wget_command is wget $cert_opt $opts --load-cookies /home/craigmatthewsmith/offshore_winds/offshore_winds/auth.rda.ucar.edu.10517 e5.oper.an.sfc/197904/e5.oper.an.sfc.128_165_10u.ll025sc.1979040100_1979043023.nc 
+      download f 13 of 30 
+      wget_command is wget $cert_opt $opts --load-cookies /home/craigmatthewsmith/offshore_winds/offshore_winds/auth.rda.ucar.edu.10517 e5.oper.an.sfc/197904/e5.oper.an.sfc.128_166_10v.ll025sc.1979040100_1979043023.nc 
+      download f 14 of 30 
+      wget_command is wget $cert_opt $opts --load-cookies /home/craigmatthewsmith/offshore_winds/offshore_winds/auth.rda.ucar.edu.10517 e5.oper.an.sfc/197904/e5.oper.an.sfc.128_167_2t.ll025sc.1979040100_1979043023.nc 
+      download f 15 of 30 
+      wget_command is wget $cert_opt $opts --load-cookies /home/craigmatthewsmith/offshore_winds/offshore_winds/auth.rda.ucar.edu.10517 e5.oper.an.sfc/197904/e5.oper.an.sfc.128_168_2d.ll025sc.1979040100_1979043023.nc 
+      download f 16 of 30 
+      wget_command is wget $cert_opt $opts --load-cookies /home/craigmatthewsmith/offshore_winds/offshore_winds/auth.rda.ucar.edu.10517 e5.oper.an.sfc/197905/e5.oper.an.sfc.128_165_10u.ll025sc.1979050100_1979053123.nc 
+      download f 17 of 30 
+      wget_command is wget $cert_opt $opts --load-cookies /home/craigmatthewsmith/offshore_winds/offshore_winds/auth.rda.ucar.edu.10517 e5.oper.an.sfc/197905/e5.oper.an.sfc.128_166_10v.ll025sc.1979050100_1979053123.nc 
+      download f 18 of 30 
+      wget_command is wget $cert_opt $opts --load-cookies /home/craigmatthewsmith/offshore_winds/offshore_winds/auth.rda.ucar.edu.10517 e5.oper.an.sfc/197905/e5.oper.an.sfc.128_167_2t.ll025sc.1979050100_1979053123.nc 
+      download f 19 of 30 
+      wget_command is wget $cert_opt $opts --load-cookies /home/craigmatthewsmith/offshore_winds/offshore_winds/auth.rda.ucar.edu.10517 e5.oper.an.sfc/197905/e5.oper.an.sfc.128_168_2d.ll025sc.1979050100_1979053123.nc 
+      download f 20 of 30 
+      wget_command is wget $cert_opt $opts --load-cookies /home/craigmatthewsmith/offshore_winds/offshore_winds/auth.rda.ucar.edu.10517 e5.oper.an.sfc/197906/e5.oper.an.sfc.128_165_10u.ll025sc.1979060100_1979063023.nc 
+      download f 21 of 30 
+      wget_command is wget $cert_opt $opts --load-cookies /home/craigmatthewsmith/offshore_winds/offshore_winds/auth.rda.ucar.edu.10517 e5.oper.an.sfc/197906/e5.oper.an.sfc.128_166_10v.ll025sc.1979060100_1979063023.nc 
+      download f 22 of 30 
+      wget_command is wget $cert_opt $opts --load-cookies /home/craigmatthewsmith/offshore_winds/offshore_winds/auth.rda.ucar.edu.10517 e5.oper.an.sfc/197906/e5.oper.an.sfc.128_167_2t.ll025sc.1979060100_1979063023.nc 
+      download f 23 of 30 
+      wget_command is wget $cert_opt $opts --load-cookies /home/craigmatthewsmith/offshore_winds/offshore_winds/auth.rda.ucar.edu.10517 e5.oper.an.sfc/197906/e5.oper.an.sfc.128_168_2d.ll025sc.1979060100_1979063023.nc 
+      download f 24 of 30 
+      wget_command is wget $cert_opt $opts --load-cookies /home/craigmatthewsmith/offshore_winds/offshore_winds/auth.rda.ucar.edu.10517 e5.oper.an.sfc/197907/e5.oper.an.sfc.128_165_10u.ll025sc.1979070100_1979073123.nc 
+      download f 25 of 30 
+      wget_command is wget $cert_opt $opts --load-cookies /home/craigmatthewsmith/offshore_winds/offshore_winds/auth.rda.ucar.edu.10517 e5.oper.an.sfc/197907/e5.oper.an.sfc.128_166_10v.ll025sc.1979070100_1979073123.nc 
+      download f 26 of 30 
+      wget_command is wget $cert_opt $opts --load-cookies /home/craigmatthewsmith/offshore_winds/offshore_winds/auth.rda.ucar.edu.10517 e5.oper.an.sfc/197907/e5.oper.an.sfc.128_167_2t.ll025sc.1979070100_1979073123.nc 
+      download f 27 of 30 
+      wget_command is wget $cert_opt $opts --load-cookies /home/craigmatthewsmith/offshore_winds/offshore_winds/auth.rda.ucar.edu.10517 e5.oper.an.sfc/197907/e5.oper.an.sfc.128_168_2d.ll025sc.1979070100_1979073123.nc 
+      download f 28 of 30 
+      wget_command is wget $cert_opt $opts --load-cookies /home/craigmatthewsmith/offshore_winds/offshore_winds/auth.rda.ucar.edu.10517 e5.oper.an.sfc/197908/e5.oper.an.sfc.128_165_10u.ll025sc.1979080100_1979083123.nc 
+      download f 29 of 30 
+      wget_command is wget $cert_opt $opts --load-cookies /home/craigmatthewsmith/offshore_winds/offshore_winds/auth.rda.ucar.edu.10517 e5.oper.an.sfc/197908/e5.oper.an.sfc.128_166_10v.ll025sc.1979080100_1979083123.nc 
+  download_grib: download url_list end 
+auth is /home/craigmatthewsmith/offshore_winds/offshore_winds/auth.rda.ucar.edu.10517 
+      download f 0 of 30 
+      wget_command is wget $cert_opt $opts --load-cookies /home/craigmatthewsmith/offshore_winds/offshore_winds/auth.rda.ucar.edu.10517 https://rda.ucar.edu/data/ds633.0/e5.oper.an.sfc/197901/e5.oper.an.sfc.128_165_10u.ll025sc.1979010100_1979013123.nc 
