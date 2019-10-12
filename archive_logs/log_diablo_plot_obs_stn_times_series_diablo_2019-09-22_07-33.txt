@@ -1,3 +1,0 @@
-###############################################################################
-instantiate_logger at 2019-09-22_07-33 
-instantiate_logger log_name is log_diablo_plot_obs_stn_times_series_diablo_2019-09-22_07-33.txt 
