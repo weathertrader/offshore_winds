@@ -1,0 +1,12 @@
+###############################################################################
+instantiate_logger at 2019-10-18_15-39 
+instantiate_logger log_name is log_download_sfc_obs_mesowest_betterweather_2019-10-18_15-39.txt 
+dt_cron_start_lt  is 2019-10-18 15:39 
+dt_cron_start_utc is 2019-10-18 23:39 
+working directory is   /home/craigmatthewsmith/offshore_winds/offshore_winds 
+host_name_db is        206.189.171.188 
+location is            betterweather 
+dt_end           rt 
+days_to_download is    1 
+processing day 2019-10-07_00-00 to 2019-10-13_00-00 
+read stn_info start 

@@ -34,7 +34,8 @@ def read_stn_metadata_from_csv(dir_work, location, use_stn, print_stn_info):
     import pandas 
     import os 
 
-    file_name_stn_read  = os.path.join(dir_work, 'station_locations_'+location+'.csv')
+    #file_name_stn_read  = os.path.join(dir_work, 'station_locations_'+location+'.csv')
+    file_name_stn_read  = os.path.join(dir_work, 'station_list_'+location+'.csv')
     stn_read_csv = pandas.read_csv(file_name_stn_read,index_col=0)
     stn_read_df_matrix = stn_read_csv.as_matrix()
 
