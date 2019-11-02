@@ -117,10 +117,13 @@ if   (ws_units == 'ms'):
     [ws_min_cont, ws_max_cont, ws_int_cont] = [0, 50, 4]
 elif (ws_units == 'mph'): 
     ws_units_label = 'mph'
-    #[ ws_min,  ws_max,  ws_int] = [0.0,  50.0,  5.0]
-    #[wsg_min, wsg_max, wsg_int] = [0.0,  81.0,  10.0]
-    [ ws_min,  ws_max,  ws_int] = [0.0,   80.0,  10.0]
-    [wsg_min, wsg_max, wsg_int] = [0.0,  120.0,  10.0]
+    #[ ws_min,  ws_max,  ws_int] = [15.0,   80.0,  5.0]
+    #[wsg_min, wsg_max, wsg_int] = [35.0,  110.0,  5.0]
+    #[ ws_min,  ws_max,  ws_int] = [0.0,   80.0,  5.0]
+    #[wsg_min, wsg_max, wsg_int] = [0.0,  110.0,  5.0]
+    [ ws_min,  ws_max,  ws_int] = [0.0,  65.0,  5.0]
+    [wsg_min, wsg_max, wsg_int] = [0.0,  85.0,  5.0]
+
 ws_ticks = numpy.arange(ws_min,ws_max+ws_int,ws_int)
 wsg_ticks = numpy.arange(wsg_min,wsg_max+wsg_int,wsg_int)
 
@@ -179,18 +182,20 @@ logger.info('read stn_info start ' )
 ###############################################################################
 # define events to use 
 
-
 n_events = 2
+# done
+#event_list = ['2017_10_08_event', '2019_10_27_event']
 #event_list = ['2019_10_09_event', '2019_10_23_event']
-#event_list = ['2018_10_14_event', '2018_11_08_event']
-event_list = ['2017_10_08_event', '2019_10_27_event']
-
+event_list = ['2018_10_14_event', '2018_11_08_event']
 #event = '2019_06_08_event'
 #event = '2019_09_24_event'
 #event = '2019_10_05_event'
 
 # define events to use 
 ###############################################################################
+
+
+#event_list = ['2017_10_08_event', '2018_10_14_event', '2018_11_08_event', '2019_10_09_event', '2019_10_23_event',  '2019_10_27_event']
 
 
 ###############################################################################
@@ -280,12 +285,14 @@ for dum in numpy.arange(ws_min, ws_max+ws_int, ws_int):
     plt.plot([dum, dum], [ws_min, ws_max], 'gray', linestyle='-', linewidth=0.5, marker='o', markersize=0) 
 plt.plot([ws_min, ws_max], [ws_min, ws_max], 'k', linestyle='-', linewidth=2.0, marker='o', markersize=0) 
 
-plt.ylim([ws_min, ws_max])
+plt.xticks(ws_ticks, fontsize=14)
+plt.yticks(ws_ticks, fontsize=14)
 plt.xlim([ws_min, ws_max])
-plt.xlabel(event_list[0], fontsize=12, labelpad=10) # 10 is too small, 20 
-plt.ylabel(event_list[1], fontsize=12, labelpad=10) # 10 is too small, 20 
+plt.ylim([ws_min, ws_max])
+plt.xlabel(event_list[0], fontsize=14, labelpad=0) # 10 is too small, 20 
+plt.ylabel(event_list[1], fontsize=14, labelpad=0) # 10 is too small, 20 
 plt.title('event maximum observed wind speed [mph] \n%s vs %s ' % (event_list[0], event_list[1]) , \
-    fontsize=12, loc='left', weight = 'bold')   
+    fontsize=16, loc='left', weight = 'bold')   
 plt.show()
 plt.tight_layout()        
 filename = 'compare_ws_max_%s_vs_%s.png' % (event_list[0], event_list[1])
@@ -305,12 +312,14 @@ for dum in numpy.arange(wsg_min, wsg_max+wsg_int, wsg_int):
     plt.plot([dum, dum], [wsg_min, wsg_max], 'gray', linestyle='-', linewidth=0.5, marker='o', markersize=0) 
 plt.plot([wsg_min, wsg_max], [wsg_min, wsg_max], 'k', linestyle='-', linewidth=2.0, marker='o', markersize=0) 
 
-plt.ylim([wsg_min, wsg_max])
+plt.xticks(wsg_ticks, fontsize=14)
+plt.yticks(wsg_ticks, fontsize=14)
 plt.xlim([wsg_min, wsg_max])
-plt.xlabel(event_list[0], fontsize=12, labelpad=10) # 10 is too small, 20 
-plt.ylabel(event_list[1], fontsize=12, labelpad=10) # 10 is too small, 20 
+plt.ylim([wsg_min, wsg_max])
+plt.xlabel(event_list[0], fontsize=14, labelpad=0) # 10 is too small, 20 
+plt.ylabel(event_list[1], fontsize=14, labelpad=0) # 10 is too small, 20 
 plt.title('event maximum observed wind gust [mph] \n%s vs %s ' % (event_list[0], event_list[1]) , \
-    fontsize=12, loc='left', weight = 'bold')   
+    fontsize=16, loc='left', weight = 'bold')   
 plt.show()
 plt.tight_layout()        
 filename = 'compare_wsg_max_%s_vs_%s.png' % (event_list[0], event_list[1])
@@ -335,7 +344,7 @@ plt.xlim([rh_min, rh_max])
 plt.xlabel(event_list[0], fontsize=12, labelpad=10) # 10 is too small, 20 
 plt.ylabel(event_list[1], fontsize=12, labelpad=10) # 10 is too small, 20 
 plt.title('event minimum observed relative humidity \n%s vs %s ' % (event_list[0], event_list[1]) , \
-    fontsize=12, loc='left', weight = 'bold')   
+    fontsize=16, loc='left', weight = 'bold')   
 plt.show()
 plt.tight_layout()        
 filename = 'compare_rh_max_%s_vs_%s.png' % (event_list[0], event_list[1])

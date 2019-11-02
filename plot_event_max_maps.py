@@ -39,6 +39,8 @@ from datetime import timedelta as td
 import argparse 
 import numpy
 import xarray
+from netCDF4 import Dataset 
+
 
 import matplotlib
 #if (manual_mode): 
@@ -135,9 +137,9 @@ if (manual_mode):
     
     ########################################
     # 2017/10/08 - obs only, no model data 
-    event = '2017_10_08_event'
-    dt_min_plot_utc_str = '2017-10-08_08'
-    dt_max_plot_utc_str = '2017-10-11_08'
+    #event = '2017_10_08_event'
+    #dt_min_plot_utc_str = '2017-10-08_08'
+    #dt_max_plot_utc_str = '2017-10-11_08'
 
 
     ########################################
@@ -336,7 +338,7 @@ if (manual_mode):
     # blank template 
     # 2019/10/27 U - obs not done, model init not done, data clean up not done, plots not done 
     event = '2019_10_27_event'
-    # M 10/27 0 am PST - U 10/27 23:59 pm PST 
+    # U 10/27 1 am PST - U 10/27 23:59 pm PST 
 
     dt_min_plot_utc_str = '2019-10-26_08'
     dt_max_plot_utc_str = '2019-10-29_08'
@@ -347,12 +349,15 @@ if (manual_mode):
     #dt_init_utc_str     = '2019-10-26_00'
     # latest_posibble ends
     model_name = 'hrrr'
-    # earliest possible, ends 
+    # earliest possible, ends 2019/10/27 16 PST
     # best / retain on local
-    dt_init_utc_str     = '2019-10-26_12'
+    #dt_init_utc_str     = '2019-10-26_12'
+    # best / retain on local
+    dt_init_utc_str     = '2019-10-27_00'
+    # lasest possible start 2019/10/27 04 PST 
+    #dt_init_utc_str     = '2019-10-27_12'
     # latest_posibble ends
-
-    
+   
 else:        
     parser = argparse.ArgumentParser(description='model to use')
     parser.add_argument('--model_name', type=str, help='model_name', required=True)    
@@ -771,20 +776,18 @@ hgt_static_2d = hgt_static_2d*3.28084 # m to ft
 
 if (ws_units == 'mph'): 
     ws_units_label = 'mph'
-    [ ws_min,  ws_max,  ws_int] = [15.0,  50.0,  2.5]
-    [wsg_min, wsg_max, wsg_int] = [25.0,  81.0,  4.0]
+    [ ws_min,  ws_max,  ws_int] = [15.0,   80.0,  5.0]
+    [wsg_min, wsg_max, wsg_int] = [35.0,  110.0,  5.0]
 ws_ticks  = numpy.arange( ws_min,  ws_max,  ws_int)
 wsg_ticks = numpy.arange(wsg_min, wsg_max, wsg_int)
 
-n_cmap_temp = 14
-cmap_temp_afmhot_r = plt.get_cmap('afmhot_r', n_cmap_temp) 
-cmap_temp_viridis  = plt.get_cmap('viridis',  n_cmap_temp) 
-cmap_temp_jet      = plt.get_cmap('jet',      n_cmap_temp) 
-cmap_temp = cmap_temp_afmhot_r
-# 'PuRd_r'
-cmap_temp = cmap_temp_afmhot_r
-#cmap_temp = cmap_temp_viridis
-#cmap_temp = cmap_temp_jet
+n_cmap_ws  = len(ws_ticks)
+n_cmap_wsg = len(wsg_ticks)
+
+cmap_ws  = plt.get_cmap('afmhot_r', n_cmap_ws) 
+cmap_wsg = plt.get_cmap('afmhot_r', n_cmap_wsg) 
+
+# 'afmhot_r', 'viridis', 'jet'
 
 # wget https://www2.census.gov/geo/tiger/TIGER2013/PRIMARYROADS/tl_2013_us_primaryroads.zip
 # wget http://www2.census.gov/geo/tiger/TIGER2013/PRISECROADS/tl_2013_06_prisecroads.zip
@@ -911,28 +914,28 @@ if (plot_ws_max_maps_obs_only):
             if not numpy.isnan(ws_max_obs_s[s]):
                 if (ws_max_obs_s[s] > ws_crit):
                     marker_edge_color = 'r'
-                    marker_edge_width = 2.0 # 4 is too big
+                    marker_edge_width = 2.0 # 0.5 # 2.0
                 else:
                     marker_edge_color = 'k'
-                    marker_edge_width = 1.0
+                    marker_edge_width = 1.0 # 0.5 # 1.0
                      
                 frac_temp = (ws_max_obs_s [s] - ws_min)/(ws_max-ws_min)
-                index_cmap_temp = int(round(n_cmap_temp*frac_temp,0))
-                if (index_cmap_temp >= n_cmap_temp): 
-                    index_cmap_temp = n_cmap_temp - 1 
-                color_temp = cmap_temp(index_cmap_temp)
+                index_cmap_temp = int(round(n_cmap_ws*frac_temp,0))
+                if (index_cmap_temp >= n_cmap_ws): 
+                    index_cmap_temp = n_cmap_ws - 1 
+                color_temp = cmap_ws(index_cmap_temp)
                 ax.plot(dict_stn_metadata['stn_lon'][s], dict_stn_metadata['stn_lat'][s], marker='o', markersize=size_marker, markerfacecolor=color_temp, markeredgecolor=marker_edge_color, markeredgewidth=marker_edge_width, alpha=alpha_level, transform=ccrs.PlateCarree())
                 del frac_temp, index_cmap_temp, color_temp          
         
         # plot legend
         if (plot_legend):
             n = 4
-            for n in range(0, n_cmap_temp, 1): 
-                frac_temp = float(n/n_cmap_temp)
+            for n in range(0, n_cmap_ws, 1): 
+                frac_temp = float(n/n_cmap_ws)
                 index_cmap_temp = n
-                #if (index_cmap_temp >= n_cmap_temp): 
-                #    index_cmap_temp = n_cmap_temp - 1 
-                color_temp = cmap_temp(index_cmap_temp)                     
+                #if (index_cmap_temp >= n_cmap_ws): 
+                #    index_cmap_temp = n_cmap_ws - 1 
+                color_temp = cmap_ws(index_cmap_temp)                     
                 ws_temp = ws_ticks[n]
                 if (ws_temp > ws_crit):
                     marker_edge_color = 'r'
@@ -988,7 +991,7 @@ if (plot_ws_max_maps_obs_only):
             ax.add_feature(shape_feature, edgecolor='m', linewidth=1.0, facecolor='none')
         
         hgt_lines = plt.contour (lon_static_2d, lat_static_2d, hgt_static_2d, levels=numpy.arange(hgt_min, hgt_max, hgt_int), colors='gray', linestyles='solid', linewidths=0.5)
-    
+     
         # plot sfc_obs
         alpha_level = 1.0 # 0.3
         s = 358
@@ -999,28 +1002,28 @@ if (plot_ws_max_maps_obs_only):
             if not numpy.isnan(wsg_max_obs_s[s]):
                 if (wsg_max_obs_s[s] > wsg_crit):
                     marker_edge_color = 'r'
-                    marker_edge_width = 2.0 # 4 is too big
+                    marker_edge_width = 2.0 # 0.5 # 2.0 # 4 is too big
                 else:
                     marker_edge_color = 'k'
-                    marker_edge_width = 1.0
+                    marker_edge_width = 1.0 # 0.5 # 1.0
                      
                 frac_temp = (wsg_max_obs_s [s] - wsg_min)/(wsg_max-wsg_min)
-                index_cmap_temp = int(round(n_cmap_temp*frac_temp,0))
-                if (index_cmap_temp >= n_cmap_temp): 
-                    index_cmap_temp = n_cmap_temp - 1 
-                color_temp = cmap_temp(index_cmap_temp)
+                index_cmap_temp = int(round(n_cmap_wsg*frac_temp,0))
+                if (index_cmap_temp >= n_cmap_ws): 
+                    index_cmap_temp = n_cmap_wsg - 1 
+                color_temp = cmap_wsg(index_cmap_temp)
                 ax.plot(dict_stn_metadata['stn_lon'][s], dict_stn_metadata['stn_lat'][s], marker='o', markersize=size_marker, markerfacecolor=color_temp, markeredgecolor=marker_edge_color, markeredgewidth=marker_edge_width, alpha=alpha_level, transform=ccrs.PlateCarree())
                 del frac_temp, index_cmap_temp, color_temp          
         
         # plot legend
         if (plot_legend):
             n = 4
-            for n in range(0, n_cmap_temp, 1): 
-                frac_temp = float(n/n_cmap_temp)
+            for n in range(0, n_cmap_ws, 1): 
+                frac_temp = float(n/n_cmap_ws)
                 index_cmap_temp = n
-                #if (index_cmap_temp >= n_cmap_temp): 
-                #    index_cmap_temp = n_cmap_temp - 1 
-                color_temp = cmap_temp(index_cmap_temp)                     
+                #if (index_cmap_temp >= n_cmap_ws): 
+                #    index_cmap_temp = n_cmap_ws - 1 
+                color_temp = cmap_wsg(index_cmap_temp)                     
                 wsg_temp = wsg_ticks[n]
                 if (wsg_temp > wsg_crit):
                     marker_edge_color = 'r'
@@ -1081,8 +1084,10 @@ for hr in range(0, n_hrs, 1):
         #sys.exit()
     else: # file exists
         # ds = xarray.open_dataset(file_name_temp_ingest, engine='cfgrib')
-        #ds_2m = xarray.open_dataset(file_name_temp_ingest, engine='cfgrib',
-        #      backend_kwargs={'filter_by_keys': {'typeOfLevel': 'heightAboveGround', 'level': 2}})
+        #ds_sfc = xarray.open_dataset(file_name_temp_ingest, engine='cfgrib',
+        #      backend_kwargs={'filter_by_keys': {'typeOfLevel': 'heightAboveGround', 'level': 'surface'}})
+        ds_2m = xarray.open_dataset(file_name_temp_ingest, engine='cfgrib',
+              backend_kwargs={'filter_by_keys': {'typeOfLevel': 'heightAboveGround', 'level': 2}})
         ds_10m = xarray.open_dataset(file_name_temp_ingest, engine='cfgrib',
              backend_kwargs={'filter_by_keys': {'typeOfLevel': 'heightAboveGround', 'level': 10}})
         #ds_sfc
@@ -1106,6 +1111,7 @@ for hr in range(0, n_hrs, 1):
                  backend_kwargs={'filter_by_keys': {'typeOfLevel': 'surface'}})
             wsg10_2d = numpy.array(ds_sfc['gust'])
             wsg10_2d_hr[:,:,hr] = wsg10_2d 
+            hgt_2d = numpy.array(ds_sfc['orog'])
             del wsg10_2d
         except:
             pass
@@ -1140,6 +1146,61 @@ logger.info('process_to_max end')
 
 
 ###############################################################################
+# write_max_model_data 
+
+write_max_model_data = True
+
+if (write_max_model_data):
+        
+    file_name_write = os.path.join(dir_data_model, 'event_max', 'max_'+event+'_model_'+model_name+'_init_'+dt_init_utc.strftime('%Y-%m-%d_%H')+'.nc')
+    print      ('  file_name_write is %s ' % (file_name_write)) 
+    logger.info('  file_name_write is %s ' % (file_name_write)) 
+    if (os.path.isfile(file_name_write)):
+        os.system('rm -f '+file_name_write)
+    ncfile_write = Dataset(file_name_write, 'w',format='NETCDF4_CLASSIC')
+
+    ncfile_write.createDimension('y', ny)
+    ncfile_write.createDimension('x', nx)
+
+    lon_2d_write = ncfile_write.createVariable('lon_2d', numpy.dtype('float32').char,('y','x'))
+    lat_2d_write = ncfile_write.createVariable('lat_2d', numpy.dtype('float32').char,('y','x'))
+    hgt_2d_write = ncfile_write.createVariable('hgt_2d', numpy.dtype('float32').char,('y','x'))
+    lon_2d_write [:] =  lon_2d
+    lat_2d_write [:] =  lat_2d
+    hgt_2d_write [:] =  hgt_2d
+    
+    ws10_max_2d_write    = ncfile_write.createVariable('ws10_max_2d',  numpy.dtype('float32').char,('y','x'))
+    wsg10_max_2d_write   = ncfile_write.createVariable('wsg10_max_2d', numpy.dtype('float32').char,('y','x'))
+    ws10_max_2d_write [:] =  ws10_max_2d[:,:]     
+    wsg10_max_2d_write[:] = wsg10_max_2d[:,:]     
+
+    del lon_2d_write, lat_2d_write, hgt_2d_write, ws10_max_2d_write, wsg10_max_2d_write
+ 
+    ncfile_write.close()
+
+# write_max_model_data 
+###############################################################################
+
+
+#read_max_model_data 
+print      (' read file begin ') 
+logger.info(' read file begin ') 
+
+file_name_read = os.path.join(dir_data_model, 'event_max', 'max_'+event+'_model_'+model_name+'_init_'+dt_init_utc.strftime('%Y-%m-%d_%H')+'.nc')
+ncfile_read  = Dataset(file_name_read,'r') 
+lon_2d = numpy.array(ncfile_read.variables['lon_2d'])
+lat_2d = numpy.array(ncfile_read.variables['lat_2d'])
+hgt_2d = numpy.array(ncfile_read.variables['hgt_2d'])
+wsg10_max_2d = numpy.array(ncfile_read.variables['wsg10_max_2d'])
+ws10_max_2d  = numpy.array(ncfile_read.variables[' ws10_max_2d'])
+ncfile_read.close()
+print      (' read file end ') 
+logger.info(' read file end ') 
+
+
+    
+
+###############################################################################
 # units_conversion
 
 print      ('units_conversion start')
@@ -1167,12 +1228,10 @@ logger.info('units_conversion end')
 ###############################################################################
 # plot 
 
-
 plot_legend = False
 
 a = 0
 a = 1
-# dont do
 a = 2
 a = 3
 a = 4
@@ -1252,7 +1311,7 @@ for a in range(0, n_areas, 1):
         ax.add_feature(shape_feature, edgecolor='m', linewidth=1.0, facecolor='none')
 
     hgt_lines = plt.contour (lon_static_2d, lat_static_2d, hgt_static_2d, levels=numpy.arange(hgt_min, hgt_max, hgt_int), colors='gray', linestyles='solid', linewidths=0.5)
-    im = plt.contourf(lon_2d, lat_2d, ws10_max_2d, numpy.arange(ws_min, ws_max, ws_int), cmap=cmap_temp, transform=ccrs.PlateCarree()) # jet, viridis 
+    im = plt.contourf(lon_2d, lat_2d, ws10_max_2d, numpy.arange(ws_min, ws_max, ws_int), cmap=cmap_ws, transform=ccrs.PlateCarree()) # jet, viridis 
     #ws_lines = plt.contour(lon_2d, lat_2d, ws10_max_2d, levels = numpy.arange(ws_min, ws_max, ws_int), colors='k', linestyles='solid', linewidths=0.5)
     ws_line  = plt.contour(lon_2d, lat_2d, ws10_max_2d, levels = [ws_crit], colors='r', linestyles='solid',linewidths=2)
     im.set_clim(ws_min, ws_max) 
@@ -1276,22 +1335,22 @@ for a in range(0, n_areas, 1):
                 marker_edge_width = 1.0
                  
             frac_temp = (ws_max_obs_s [s] - ws_min)/(ws_max-ws_min)
-            index_cmap_temp = int(round(n_cmap_temp*frac_temp,0))
-            if (index_cmap_temp >= n_cmap_temp): 
-                index_cmap_temp = n_cmap_temp - 1 
-            color_temp = cmap_temp(index_cmap_temp)
+            index_cmap_temp = int(round(n_cmap_ws*frac_temp,0))
+            if (index_cmap_temp >= n_cmap_ws): 
+                index_cmap_temp = n_cmap_ws - 1 
+            color_temp = cmap_ws(index_cmap_temp)
             ax.plot(dict_stn_metadata['stn_lon'][s], dict_stn_metadata['stn_lat'][s], marker='o', markersize=size_marker, markerfacecolor=color_temp, markeredgecolor=marker_edge_color, markeredgewidth=marker_edge_width, alpha=alpha_level, transform=ccrs.PlateCarree())
             del frac_temp, index_cmap_temp, color_temp          
     
     # plot legend
     if (plot_legend):
         n = 4
-        for n in range(0, n_cmap_temp, 1): 
-            frac_temp = float(n/n_cmap_temp)
+        for n in range(0, n_cmap_ws, 1): 
+            frac_temp = float(n/n_cmap_ws)
             index_cmap_temp = n
-            #if (index_cmap_temp >= n_cmap_temp): 
-            #    index_cmap_temp = n_cmap_temp - 1 
-            color_temp = cmap_temp(index_cmap_temp)                     
+            #if (index_cmap_temp >= n_cmap_ws): 
+            #    index_cmap_temp = n_cmap_ws - 1 
+            color_temp = cmap_ws(index_cmap_temp)                     
             ws_temp = ws_ticks[n]
             if (ws_temp > ws_crit):
                 marker_edge_color = 'r'
@@ -1301,6 +1360,19 @@ for a in range(0, n_areas, 1):
                 marker_edge_width = 1.0        
             ax.plot(lon_legend_start, lat_legend_start+n*lat_legend_int, marker='o', markersize=size_marker, markerfacecolor=color_temp, markeredgecolor=marker_edge_color, markeredgewidth=marker_edge_width, alpha=alpha_level, transform=ccrs.PlateCarree())
             ax.text(lon_legend_start+0.03, lat_legend_start+n*lat_legend_int-lat_legend_int*0.25, str(ws_temp).rjust(2,'0'), color='k', fontsize=8, ha='left', alpha=alpha_level, transform=ccrs.PlateCarree())
+
+    # plot ignitions 
+    # kincade fire in no bay 
+    if ((event == '2019_10_09_event') and (a == 1)):
+        ax.plot(-122.780053, 38.792458, marker='+', markersize=20, markerfacecolor='m', markeredgecolor='m', markeredgewidth=3.0, alpha=1.0, transform=ccrs.PlateCarree())
+    # lafayette, bothel etc 
+    if ((event == '2019_10_27_event') and (a == 3)):
+        #lafayette x2, oakley, bothel, milpitas
+        ax.plot(-122.123333, 37.895000, marker='+', markersize=20, markerfacecolor='m', markeredgecolor='m', markeredgewidth=3.0, alpha=1.0, transform=ccrs.PlateCarree())
+        ax.plot(-122.118611, 37.895833, marker='+', markersize=20, markerfacecolor='m', markeredgecolor='m', markeredgewidth=3.0, alpha=1.0, transform=ccrs.PlateCarree())
+        ax.plot(-121.658333, 38.028333, marker='+', markersize=20, markerfacecolor='m', markeredgecolor='m', markeredgewidth=3.0, alpha=1.0, transform=ccrs.PlateCarree())    
+        ax.plot(-121.678333, 38.000000, marker='+', markersize=20, markerfacecolor='m', markeredgecolor='m', markeredgewidth=3.0, alpha=1.0, transform=ccrs.PlateCarree())    
+        ax.plot(-121.874444, 37.456111, marker='+', markersize=20, markerfacecolor='m', markeredgecolor='m', markeredgewidth=3.0, alpha=1.0, transform=ccrs.PlateCarree())    
 
     plt.xlabel('longitude', fontsize=12, labelpad=10) # 10 is too small, 20 
     plt.ylabel('latitude',  fontsize=12, labelpad=10) # 30 is too small, 60 
@@ -1347,7 +1419,7 @@ for a in range(0, n_areas, 1):
         ax.add_feature(shape_feature, edgecolor='m', linewidth=1.0, facecolor='none')
     
     hgt_lines = plt.contour (lon_static_2d, lat_static_2d, hgt_static_2d, levels=numpy.arange(hgt_min, hgt_max, hgt_int), colors='gray', linestyles='solid', linewidths=0.5)
-    im = plt.contourf(lon_2d, lat_2d, wsg10_max_2d, numpy.arange(wsg_min, wsg_max, wsg_int), cmap=cmap_temp, transform=ccrs.PlateCarree()) # jet, viridis 
+    im = plt.contourf(lon_2d, lat_2d, wsg10_max_2d, numpy.arange(wsg_min, wsg_max, wsg_int), cmap=cmap_wsg, transform=ccrs.PlateCarree()) # jet, viridis 
     #wsg_lines = plt.contour(lon_2d, lat_2d, wsg10_max_2d, levels = numpy.arange(wsg_min, wsg_max, wsg_int), colors='k', linestyles='solid', linewidths=0.5)
     wsg_line        = plt.contour(lon_2d, lat_2d, wsg10_max_2d, levels = [wsg_crit], colors='r', linestyles='solid',linewidths=2)
     wsg_line_t_line = plt.contour(lon_2d, lat_2d, wsg10_max_2d, levels = [wsg_crit_t_line], colors='m', linestyles='solid',linewidths=2)
@@ -1373,22 +1445,22 @@ for a in range(0, n_areas, 1):
                 marker_edge_width = 1.0
                  
             frac_temp = (wsg_max_obs_s [s] - wsg_min)/(wsg_max-wsg_min)
-            index_cmap_temp = int(round(n_cmap_temp*frac_temp,0))
-            if (index_cmap_temp >= n_cmap_temp): 
-                index_cmap_temp = n_cmap_temp - 1 
-            color_temp = cmap_temp(index_cmap_temp)
+            index_cmap_temp = int(round(n_cmap_wsg*frac_temp,0))
+            if (index_cmap_temp >= n_cmap_wsg): 
+                index_cmap_temp = n_cmap_wsg - 1 
+            color_temp = cmap_wsg(index_cmap_temp)
             ax.plot(dict_stn_metadata['stn_lon'][s], dict_stn_metadata['stn_lat'][s], marker='o', markersize=size_marker, markerfacecolor=color_temp, markeredgecolor=marker_edge_color, markeredgewidth=marker_edge_width, alpha=alpha_level, transform=ccrs.PlateCarree())
             del frac_temp, index_cmap_temp, color_temp          
     
     # plot legend
     if (plot_legend):
         n = 4
-        for n in range(0, n_cmap_temp, 1): 
-            frac_temp = float(n/n_cmap_temp)
+        for n in range(0, n_cmap_ws, 1): 
+            frac_temp = float(n/n_cmap_wsg)
             index_cmap_temp = n
-            #if (index_cmap_temp >= n_cmap_temp): 
-            #    index_cmap_temp = n_cmap_temp - 1 
-            color_temp = cmap_temp(index_cmap_temp)                     
+            #if (index_cmap_temp >= n_cmap_ws): 
+            #    index_cmap_temp = n_cmap_ws - 1 
+            color_temp = cmap_wsg(index_cmap_temp)
             wsg_temp = wsg_ticks[n]
             if (wsg_temp > wsg_crit):
                 marker_edge_color = 'r'
@@ -1398,6 +1470,19 @@ for a in range(0, n_areas, 1):
                 marker_edge_width = 1.0        
             ax.plot(lon_legend_start, lat_legend_start+n*lat_legend_int, marker='o', markersize=size_marker, markerfacecolor=color_temp, markeredgecolor=marker_edge_color, markeredgewidth=marker_edge_width, alpha=alpha_level, transform=ccrs.PlateCarree())
             ax.text(lon_legend_start+0.03, lat_legend_start+n*lat_legend_int-lat_legend_int*0.25, str(wsg_temp).rjust(2,'0'), color='k', fontsize=8, ha='left', alpha=alpha_level, transform=ccrs.PlateCarree())
+
+    # plot ignitions 
+    # kincade fire in no bay 
+    if ((event == '2019_10_09_event') and (a == 1)):
+        ax.plot(-122.780053, 38.792458, marker='+', markersize=20, markerfacecolor='m', markeredgecolor='m', markeredgewidth=3.0, alpha=1.0, transform=ccrs.PlateCarree())
+    # lafayette, bothel etc 
+    if ((event == '2019_10_27_event') and (a == 3)):
+        #lafayette x2, oakley, bothel, milpitas
+        ax.plot(-122.123333, 37.895000, marker='+', markersize=20, markerfacecolor='m', markeredgecolor='m', markeredgewidth=3.0, alpha=1.0, transform=ccrs.PlateCarree())
+        ax.plot(-122.118611, 37.895833, marker='+', markersize=20, markerfacecolor='m', markeredgecolor='m', markeredgewidth=3.0, alpha=1.0, transform=ccrs.PlateCarree())
+        ax.plot(-121.658333, 38.028333, marker='+', markersize=20, markerfacecolor='m', markeredgecolor='m', markeredgewidth=3.0, alpha=1.0, transform=ccrs.PlateCarree())    
+        ax.plot(-121.678333, 38.000000, marker='+', markersize=20, markerfacecolor='m', markeredgecolor='m', markeredgewidth=3.0, alpha=1.0, transform=ccrs.PlateCarree())    
+        ax.plot(-121.874444, 37.456111, marker='+', markersize=20, markerfacecolor='m', markeredgecolor='m', markeredgewidth=3.0, alpha=1.0, transform=ccrs.PlateCarree())    
 
     plt.xlabel('longitude', fontsize=12, labelpad=10) # 10 is too small, 20 
     plt.ylabel('latitude',  fontsize=12, labelpad=10) # 30 is too small, 60 
