@@ -332,7 +332,7 @@ if (manual_mode):
     # earliest possible, ends 
     # best / retain on local
     #dt_init_utc_str     = '2019-10-23_12'
-    # latest_posibble ends
+    # latest_possible ends
 
     ########################################
     # blank template 
@@ -758,17 +758,19 @@ if (plot_ws_vs_stn_ele):
 
 ###############################################################################
 # read_topo 
-
-print      ('read_topo_data begin')
-logger.info('read_topo_data begin')
-
-file_name_temp_ingest = os.path.join(dir_work, 'nam_static.grib2')
-ds_sfc = xarray.open_dataset(file_name_temp_ingest, engine='cfgrib',
-     backend_kwargs={'filter_by_keys': {'typeOfLevel': 'surface'}})
-lon_static_2d = numpy.array(ds_sfc['longitude'])
-lat_static_2d = numpy.array(ds_sfc['latitude'])
-hgt_static_2d = numpy.array(ds_sfc['orog'])
-hgt_static_2d = hgt_static_2d*3.28084 # m to ft
+    
+use_standalone_topo = False
+if (use_standalone_topo):
+    print      ('read_topo_data begin')
+    logger.info('read_topo_data begin')
+    
+    file_name_temp_ingest = os.path.join(dir_work, 'nam_static.grib2')
+    ds_sfc = xarray.open_dataset(file_name_temp_ingest, engine='cfgrib',
+         backend_kwargs={'filter_by_keys': {'typeOfLevel': 'surface'}})
+    lon_static_2d = numpy.array(ds_sfc['longitude'])
+    lat_static_2d = numpy.array(ds_sfc['latitude'])
+    hgt_static_2d = numpy.array(ds_sfc['orog'])
+    hgt_static_2d = hgt_static_2d*3.28084 # m to ft
 
 # read_topo 
 ###############################################################################
@@ -1058,147 +1060,29 @@ if (plot_ws_max_maps_obs_only):
 print      ('read_model_data begin')
 logger.info('read_model_data begin')
 
-# old runs
-#[ny, nx] = [1059, 839] # must know a priori
-# new 
-#[ny, nx] = [1059, 596] # must know a priori
-# new 
-#[ny, nx] = [940, 357] # must know a priori
-
-initial_read = False
-hr = 0
-for hr in range(0, n_hrs, 1):
-    dt_valid_temp = dt_min_plot_utc + td(hours=hr)
-    print      ('  reading %s UTC ' %(dt_valid_temp.strftime('%Y-%m-%d_%H')))
-    logger.info('  reading %s UTC ' %(dt_valid_temp.strftime('%Y-%m-%d_%H')))
-    # new format
-    (file_name_temp_ingest, file_name_temp_archive) = build_model_local_file_names(logger, model_name, dt_init_utc, dt_valid_temp, dir_data_model_raw_ingest, dir_data_model_raw_archive)
-    # old format
-    #file_name = dt_init_utc.strftime('%Y%m%d%H')+'f'+str(hr).rjust(2,'0')+'_hrrrall.grib2'
-    #file_name_temp_ingest = os.path.join(dir_data_model_raw_ingest, file_name)
-    os.path.isfile(file_name_temp_ingest)    
-    #if not (os.path.isfile(file_name_temp_ingest)) or (os.path.isfile(file_name_temp_archive)):
-    if not (os.path.isfile(file_name_temp_ingest)):
-        print      ('  ERROR missing file ')
-        logger.info('  ERROR missing file ')
-        #sys.exit()
-    else: # file exists
-        # ds = xarray.open_dataset(file_name_temp_ingest, engine='cfgrib')
-        #ds_sfc = xarray.open_dataset(file_name_temp_ingest, engine='cfgrib',
-        #      backend_kwargs={'filter_by_keys': {'typeOfLevel': 'heightAboveGround', 'level': 'surface'}})
-        ds_2m = xarray.open_dataset(file_name_temp_ingest, engine='cfgrib',
-              backend_kwargs={'filter_by_keys': {'typeOfLevel': 'heightAboveGround', 'level': 2}})
-        ds_10m = xarray.open_dataset(file_name_temp_ingest, engine='cfgrib',
-             backend_kwargs={'filter_by_keys': {'typeOfLevel': 'heightAboveGround', 'level': 10}})
-        #ds_sfc
-        #ds_2m
-        #ds_10m
-        if not (initial_read):
-            lon_2d = numpy.array(ds_10m['longitude'])
-            lat_2d = numpy.array(ds_10m['latitude'])
-            #hgt_2d = numpy.array(ds_sfc['orog'])
-            #hgt_2d = hgt_2d*3.28084 # m to ft
-            [ny, nx] = numpy.shape(lon_2d)
-            ws10_2d_hr  = numpy.full([ny, nx, n_hrs], numpy.nan, dtype=float)
-            wsg10_2d_hr = numpy.full([ny, nx, n_hrs], numpy.nan, dtype=float)
-            initial_read = True    
-        u_ws10_2d = numpy.array(ds_10m['u10'])
-        v_ws10_2d = numpy.array(ds_10m['v10'])
-        ws10_2d = numpy.sqrt(u_ws10_2d**2.0 + v_ws10_2d**2.0)
-        ws10_2d_hr [:,:,hr] = ws10_2d 
-        try:
-            ds_sfc = xarray.open_dataset(file_name_temp_ingest, engine='cfgrib',
-                 backend_kwargs={'filter_by_keys': {'typeOfLevel': 'surface'}})
-            wsg10_2d = numpy.array(ds_sfc['gust'])
-            wsg10_2d_hr[:,:,hr] = wsg10_2d 
-            hgt_2d = numpy.array(ds_sfc['orog'])
-            del wsg10_2d
-        except:
-            pass
-        del u_ws10_2d, v_ws10_2d, ws10_2d
-
-lon_2d = lon_2d - 360.0        
-print      ('read_data end')
-logger.info('read_data end')
-
-# read_model_data
-###############################################################################
-
-
-###############################################################################
-# process to max 
-
-print      ('process_to_max begin')
-logger.info('process_to_max begin')
-
-ws10_max_2d  = numpy.full([ny, nx], numpy.nan, dtype=float)
-wsg10_max_2d = numpy.full([ny, nx], numpy.nan, dtype=float)
-for j in range(0, ny , 1):
-    for i in range(0, nx, 1):
-        ws10_max_2d [j,i] = numpy.nanmax( ws10_2d_hr[j,i,:])
-        wsg10_max_2d[j,i] = numpy.nanmax(wsg10_2d_hr[j,i,:])
-
-print      ('process_to_max end')
-logger.info('process_to_max end')
-
-# process to max 
-###############################################################################
-
-
-###############################################################################
-# write_max_model_data 
-
-write_max_model_data = True
-
-if (write_max_model_data):
-        
-    file_name_write = os.path.join(dir_data_model, 'event_max', 'max_'+event+'_model_'+model_name+'_init_'+dt_init_utc.strftime('%Y-%m-%d_%H')+'.nc')
-    print      ('  file_name_write is %s ' % (file_name_write)) 
-    logger.info('  file_name_write is %s ' % (file_name_write)) 
-    if (os.path.isfile(file_name_write)):
-        os.system('rm -f '+file_name_write)
-    ncfile_write = Dataset(file_name_write, 'w',format='NETCDF4_CLASSIC')
-
-    ncfile_write.createDimension('y', ny)
-    ncfile_write.createDimension('x', nx)
-
-    lon_2d_write = ncfile_write.createVariable('lon_2d', numpy.dtype('float32').char,('y','x'))
-    lat_2d_write = ncfile_write.createVariable('lat_2d', numpy.dtype('float32').char,('y','x'))
-    hgt_2d_write = ncfile_write.createVariable('hgt_2d', numpy.dtype('float32').char,('y','x'))
-    lon_2d_write [:] =  lon_2d
-    lat_2d_write [:] =  lat_2d
-    hgt_2d_write [:] =  hgt_2d
-    
-    ws10_max_2d_write    = ncfile_write.createVariable('ws10_max_2d',  numpy.dtype('float32').char,('y','x'))
-    wsg10_max_2d_write   = ncfile_write.createVariable('wsg10_max_2d', numpy.dtype('float32').char,('y','x'))
-    ws10_max_2d_write [:] =  ws10_max_2d[:,:]     
-    wsg10_max_2d_write[:] = wsg10_max_2d[:,:]     
-
-    del lon_2d_write, lat_2d_write, hgt_2d_write, ws10_max_2d_write, wsg10_max_2d_write
- 
-    ncfile_write.close()
-
-# write_max_model_data 
-###############################################################################
-
-
 #read_max_model_data 
 print      (' read file begin ') 
 logger.info(' read file begin ') 
 
 file_name_read = os.path.join(dir_data_model, 'event_max', 'max_'+event+'_model_'+model_name+'_init_'+dt_init_utc.strftime('%Y-%m-%d_%H')+'.nc')
 ncfile_read  = Dataset(file_name_read,'r') 
-lon_2d = numpy.array(ncfile_read.variables['lon_2d'])
-lat_2d = numpy.array(ncfile_read.variables['lat_2d'])
-hgt_2d = numpy.array(ncfile_read.variables['hgt_2d'])
+initial_read = False
+if not (initial_read):
+    lon_2d = numpy.array(ncfile_read.variables['lon_2d'])
+    lat_2d = numpy.array(ncfile_read.variables['lat_2d'])
+    hgt_2d = numpy.array(ncfile_read.variables['hgt_2d'])
+    hgt_2d = hgt_2d*3.28084 # m to ft
+
+    initial_read = True
 wsg10_max_2d = numpy.array(ncfile_read.variables['wsg10_max_2d'])
-ws10_max_2d  = numpy.array(ncfile_read.variables[' ws10_max_2d'])
+ws10_max_2d  = numpy.array(ncfile_read.variables[ 'ws10_max_2d'])
 ncfile_read.close()
 print      (' read file end ') 
 logger.info(' read file end ') 
 
+# read_model_data
+###############################################################################
 
-    
 
 ###############################################################################
 # units_conversion
@@ -1310,7 +1194,8 @@ for a in range(0, n_areas, 1):
         shape_feature = ShapelyFeature(shapereader.Reader(shape_file_name).geometries(), ccrs.PlateCarree())
         ax.add_feature(shape_feature, edgecolor='m', linewidth=1.0, facecolor='none')
 
-    hgt_lines = plt.contour (lon_static_2d, lat_static_2d, hgt_static_2d, levels=numpy.arange(hgt_min, hgt_max, hgt_int), colors='gray', linestyles='solid', linewidths=0.5)
+    #hgt_lines = plt.contour (lon_static_2d, lat_static_2d, hgt_static_2d, levels=numpy.arange(hgt_min, hgt_max, hgt_int), colors='gray', linestyles='solid', linewidths=0.5)
+    hgt_lines = plt.contour (lon_2d, lat_2d, hgt_2d, levels=numpy.arange(hgt_min, hgt_max, hgt_int), colors='gray', linestyles='solid', linewidths=0.5)
     im = plt.contourf(lon_2d, lat_2d, ws10_max_2d, numpy.arange(ws_min, ws_max, ws_int), cmap=cmap_ws, transform=ccrs.PlateCarree()) # jet, viridis 
     #ws_lines = plt.contour(lon_2d, lat_2d, ws10_max_2d, levels = numpy.arange(ws_min, ws_max, ws_int), colors='k', linestyles='solid', linewidths=0.5)
     ws_line  = plt.contour(lon_2d, lat_2d, ws10_max_2d, levels = [ws_crit], colors='r', linestyles='solid',linewidths=2)
@@ -1418,7 +1303,8 @@ for a in range(0, n_areas, 1):
         shape_feature = ShapelyFeature(shapereader.Reader(shape_file_name).geometries(), ccrs.PlateCarree())
         ax.add_feature(shape_feature, edgecolor='m', linewidth=1.0, facecolor='none')
     
-    hgt_lines = plt.contour (lon_static_2d, lat_static_2d, hgt_static_2d, levels=numpy.arange(hgt_min, hgt_max, hgt_int), colors='gray', linestyles='solid', linewidths=0.5)
+    #hgt_lines = plt.contour (lon_static_2d, lat_static_2d, hgt_static_2d, levels=numpy.arange(hgt_min, hgt_max, hgt_int), colors='gray', linestyles='solid', linewidths=0.5)
+    hgt_lines = plt.contour (lon_2d, lat_2d, hgt_2d, levels=numpy.arange(hgt_min, hgt_max, hgt_int), colors='gray', linestyles='solid', linewidths=0.5)
     im = plt.contourf(lon_2d, lat_2d, wsg10_max_2d, numpy.arange(wsg_min, wsg_max, wsg_int), cmap=cmap_wsg, transform=ccrs.PlateCarree()) # jet, viridis 
     #wsg_lines = plt.contour(lon_2d, lat_2d, wsg10_max_2d, levels = numpy.arange(wsg_min, wsg_max, wsg_int), colors='k', linestyles='solid', linewidths=0.5)
     wsg_line        = plt.contour(lon_2d, lat_2d, wsg10_max_2d, levels = [wsg_crit], colors='r', linestyles='solid',linewidths=2)
