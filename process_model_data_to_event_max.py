@@ -1,4 +1,128 @@
 
+# dl to local
+# process_max
+# copy to external, clean up external 
+# vs_init
+# compare exceedance polygons to original
+
+
+
+# gsutil cp gs://high-resolution-rapid-refresh/hrrr.20191027/conus/hrrr.t00z.wrfsfcf*.grib2 .
+
+# gsutil ls gs://high-resolution-rapid-refresh/hrrr.20191027/conus/hrrr.t00z.wrfsfcf*.grib2
+
+
+# python /home/craigmatthewsmith/offshore_winds/offshore_winds/process_model_data_to_event_max.py --model_name='hrrr' --event='2019_10_27_event' --dt_init_utc_str='2019-10-27_00' --dt_min_plot_utc_str='2019-10-26_08' --dt_max_plot_utc_str='2019-10-29_08'
+
+
+
+# not dl yet
+#dt_init_utc_str     = '2019-10-26_12'
+#dt_init_utc_str     = '2019-10-26_18'
+#dt_init_utc_str     = '2019-10-27_00'
+#dt_init_utc_str     = '2019-10-27_06'
+#dt_init_utc_str     = '2019-10-27_12'
+
+
+# dl only
+
+# dl, process_to_max
+
+# dl, process_to_max, archive 
+
+   
+########################################
+# 2019/10/27 - plot_vs_init not done 
+#event = '2019_10_27_event'
+# U 10/27 1 am PST - U 10/27 23:59 pm PST 
+#dt_min_plot_utc_str = '2019-10-26_08'
+#dt_max_plot_utc_str = '2019-10-29_08'
+
+
+
+########################################
+# 2018/10/14 - plot_vs_init done
+# python /home/craigmatthewsmith/offshore_winds/offshore_winds/process_model_data_to_event_max.py --model_name='hrrr' --event='2018_10_14_event' --dt_init_utc_str='2018-10-14_06' --dt_min_plot_utc_str='2018-10-13_08' --dt_max_plot_utc_str='2018-10-16_16'
+#dt_init_utc_str     = '2018-10-13_12'
+#dt_init_utc_str     = '2018-10-13_18'
+#dt_init_utc_str     = '2018-10-14_00'
+#dt_init_utc_str     = '2018-10-14_06'
+#dt_init_utc_str     = '2018-10-14_12'
+#dt_init_utc_str     = '2018-10-14_18'
+#dt_init_utc_str     = '2018-10-15_00'
+#dt_init_utc_str     = '2018-10-15_06'
+
+########################################
+# 2018/11/08 - plot_vs_init done
+# python /home/craigmatthewsmith/offshore_winds/offshore_winds/process_model_data_to_event_max.py --model_name='hrrr' --event='2018_11_08_event' --dt_init_utc_str='2018-11-07_12' --dt_min_plot_utc_str='2018-11-06_08' --dt_max_plot_utc_str='2018-11-10_16'
+#dt_init_utc_str     = '2018-11-07_00'
+#dt_init_utc_str     = '2018-11-07_06'
+#dt_init_utc_str     = '2018-11-07_12'
+#dt_init_utc_str     = '2018-11-07_18'
+#dt_init_utc_str     = '2018-11-08_00'
+#dt_init_utc_str     = '2018-11-08_06'
+#dt_init_utc_str     = '2018-11-08_12'
+
+########################################
+# 2019/10/09-10 
+# python /home/craigmatthewsmith/offshore_winds/offshore_winds/process_model_data_to_event_max.py --model_name='hrrr' --event='2019_10_09_event' --dt_init_utc_str='2019-10-09_00' --dt_min_plot_utc_str='2019-10-09_08' --dt_max_plot_utc_str='2019-10-11_08'
+# dt_init_utc_str     = '2019-10-09_00'
+# dt_init_utc_str     = '2019-10-09_06'
+# dt_init_utc_str     = '2019-10-09_12'
+# dt_init_utc_str     = '2019-10-09_18'
+
+########################################
+# python /home/craigmatthewsmith/offshore_winds/offshore_winds/process_model_data_to_event_max.py --model_name='hrrr' --event='2019_10_23_event' --dt_init_utc_str='2019-10-23_00' --dt_min_plot_utc_str='2019-10-23_08' --dt_max_plot_utc_str='dt_max_plot_utc_str='2019-10-25_08'
+# 2019/10/23-23 - plot_vs_init not done 
+#event = '2019_10_23_event'
+# W 10/23 6 am PST - R 10/24 6 pm PST 
+#dt_min_plot_utc_str = '2019-10-23_08'
+#dt_max_plot_utc_str = '2019-10-25_08'
+#dt_init_utc_str     = '2019-10-23_00'
+#dt_init_utc_str     = '2019-10-23_06'
+#dt_init_utc_str     = '2019-10-23_12'
+#dt_init_utc_str     = '2019-10-23_18'
+
+
+
+
+
+########################################
+# 2019/06/08 - plot_vs_init not done 
+# earliest possible, ends 2019-06-08_16 PST
+#dt_init_utc_str     = '2019-06-07_12'
+#dt_init_utc_str     = '2019-06-07_18'
+#dt_init_utc_str     = '2019-06-08_00'
+#dt_init_utc_str     = '2019-06-08_06'
+
+########################################
+# 2019/09/24 - plot_vs_init not done 
+#model_name = 'hrrr' 
+#dt_init_utc_str     = '2019-09-24_06'
+#dt_init_utc_str     = '2019-09-24_12'
+#dt_init_utc_str     = '2019-09-24_18'
+#dt_init_utc_str     = '2019-09-25_00'
+#dt_init_utc_str     = '2019-09-25_06'
+ 
+########################################
+# 2019/10/06 - plot_vs_init not done 
+#dt_init_utc_str     = '2019-10-05_06'
+#dt_init_utc_str     = '2019-10-05_12'
+#dt_init_utc_str     = '2019-10-05_18'
+#dt_init_utc_str     = '2019-10-06_00'
+#dt_init_utc_str     = '2019-10-06_06'
+   
+########################################
+# 2019/11/19 - plot_vs_init not done
+#dt_init_utc_str     = '2019-10-26_12'
+#dt_init_utc_str     = '2019-10-27_00'
+# latest possible start 2019/10/27 04 PST 
+#dt_init_utc_str     = '2019-10-27_12'
+
+
+
+
+
 ###############################################################################
 # process_model_data_to_event_max.py
 # author: Craig Smith 
@@ -18,7 +142,8 @@
 #   - 
 ###############################################################################
 
-# python /home/craigmatthewsmith/offshore_winds/offshore_winds/process_model_data_to_event_max.py --event='2019_10_09_event' --dt_min_plot_utc_str='2019-10-09_08' --dt_max_plot_utc_str='2019-10-11_08' --model_name='nam' --dt_init_utc_str='2019-10-07_12' 
+# python /home/craigmatthewsmith/offshore_winds/offshore_winds/process_model_data_to_event_max.py --event='2019_10_09_event' --dt_min_plot_utc_str='2019-10-09_08' --dt_max_plot_utc_str='2019-10-11_08' --model_name='hrrr' --dt_init_utc_str='2019-10-07_12' 
+
 # 2019-10-10_00
 
 
@@ -104,7 +229,7 @@ print      ('instantiate_logger end' )
 
 # forecast horizon
 # hrrr is 36 hr 
-# nam  is 84 hr 
+# nam  is 60 hr nam 4km, 84 hr nam 12 km 
 
 # availability on nomads
 # hrrr 1 day, today and yesterday only
@@ -124,16 +249,15 @@ if (manual_mode):
     #dt_min_plot_utc_str = '2017-10-08_08'
     #dt_max_plot_utc_str = '2017-10-11_08'
 
-
     ########################################
     # 2018/10/14 - obs done, model init done, data clean up not done, plots not done 
     # model data avail, hrrr only, 2018_10_13_12, 2018_10_14_00
-    event = '2018_10_14_event'
+    #event = '2018_10_14_event'
     # PSPS time was  2018/10/14 20 - 2018/10/16 15, or 2018/10/17 06 PST 
     # plotting   2018-10-13_00 - 2018-10-16_08 PST
     # peak event 2018/10/14 12 - 2018/10/15 12 PST 
-    dt_min_plot_utc_str = '2018-10-13_08'
-    dt_max_plot_utc_str = '2018-10-16_16'
+    #dt_min_plot_utc_str = '2018-10-13_08'
+    #dt_max_plot_utc_str = '2018-10-16_16'
     #model_name = 'nam'
     # earliest possible, ends 2018-10-15_04 PST
     #dt_init_utc_str     = '2018-10-12_00'
@@ -144,14 +268,16 @@ if (manual_mode):
     #dt_init_utc_str     = '2018-10-15_12'
     # latest possible,   starts  2018-10-14_16 PST
     #dt_init_utc_str     = '2018-10-15_00'
-    model_name = 'hrrr' 
+    #model_name = 'hrrr' 
     # probably too early, but will do anyways 
-    dt_init_utc_str     = '2018-10-13_12'
+    #dt_init_utc_str     = '2018-10-13_12'
     # done
     #dt_init_utc_str     = '2018-10-14_00'
     # earliest possible, ends 2018-10-15_10 PST
     #dt_init_utc_str     = '2018-10-14_06'
+    # best 1
     #dt_init_utc_str     = '2018-10-14_12'
+    # best 2
     #dt_init_utc_str     = '2018-10-14_18'
     #dt_init_utc_str     = '2018-10-15_00'
     # latest possible,   starts  2018-10-14_16 PST
@@ -298,7 +424,6 @@ if (manual_mode):
     # latest possible starts 2019-10-09_16
     # dt_init_utc_str     = '2019-10-10_00'
 
-
     ########################################
     # 2019/10/23-23 - obs not done, model init not done, data clean up not done, plots not done 
     #event = '2019_10_23_event'
@@ -318,18 +443,18 @@ if (manual_mode):
     # latest_posibble ends
 
     ########################################
-    # blank template 
-    # 2019/10/27 U - obs not done, model init not done, data clean up not done, plots not done 
-    #event = '2019_10_27_event'
-    # U 10/27 1 am PST - U 10/27 23:59 pm PST 
+    # 2019/11/19 
+    #event = '2019_11_19_event'
+    # T 11/19 1 am PST - W 11/22 11:59 am PST 
 
-    #dt_min_plot_utc_str = '2019-10-26_08'
-    #dt_max_plot_utc_str = '2019-10-29_08'
+    #dt_min_plot_utc_str = '2019-11-20_08'
+    #dt_max_plot_utc_str = '2019-11-21_19'
     # plotting 2019-10-09_00 - 2019-10-11_00 PST 
     #model_name = 'nam'
     # earliest possible, ends 
     # best / retain on local
-    #dt_init_utc_str     = '2019-10-26_00'
+    #dt_init_utc_str     = '2019-11-19_00'
+    #dt_init_utc_str     = '2019-11-19_12'
     # latest_posibble ends
     #model_name = 'hrrr'
     # earliest possible, ends 2019/10/27 16 PST
@@ -339,6 +464,28 @@ if (manual_mode):
     # latest possible start 2019/10/27 04 PST 
     #dt_init_utc_str     = '2019-10-27_12'
     # latest_posibble ends
+   
+    ########################################
+    # 2019/10/27 U event 
+    event = '2019_10_27_event'
+    # U 10/27 1 am PST - U 10/27 23:59 pm PST 
+
+    dt_min_plot_utc_str = '2019-10-26_08'
+    dt_max_plot_utc_str = '2019-10-29_08'
+    # plotting 2019-10-09_00 - 2019-10-11_00 PST 
+    #model_name = 'nam'
+    # earliest possible, ends 
+    # best / retain on local
+    #dt_init_utc_str     = '2019-10-26_00'
+    # latest_posibble ends
+    model_name = 'hrrr'
+    # earliest possible, ends 2019/10/27 16 PST
+    #dt_init_utc_str     = '2019-10-26_12'
+    # best / retain on local
+    dt_init_utc_str     = '2019-10-27_00'
+    # latest possible start 2019/10/27 04 PST 
+    #dt_init_utc_str     = '2019-10-27_12'
+    # latest_possible ends
    
 else:        
     parser = argparse.ArgumentParser(description='model to use')
@@ -431,6 +578,17 @@ n_hrs = (dt_max_plot_utc - dt_min_plot_utc).days*24
 ###############################################################################
 
 
+
+#[lon_min, lon_max] = [-160.0, -110.0]
+#[lat_min, lat_max] = [  25.0,   50.0]
+# nor cal only 
+#[lon_min, lon_max, lon_int] = [-124.5, -117.0, 1.0]
+#[lat_min, lat_max, lat_int] = [  36.0,   42.2, 0.5]
+# all ca
+[lon_min, lon_max, lon_int] = [-124.5, -114.0, 1.0]
+[lat_min, lat_max, lat_int] = [  32.0,   42.2, 0.5]
+
+
 ###############################################################################
 # read_model_data
 
@@ -453,11 +611,18 @@ for hr in range(0, n_hrs, 1):
     # new format
     #(file_name_temp_ingest, file_name_temp_archive) = build_model_local_file_names(logger, model_name, dt_init_utc, dt_valid_temp, dir_data_model_raw_ingest, dir_data_model_raw_archive)
     # old format
-    file_name = dt_init_utc.strftime('%Y%m%d%H')+'f'+str(hr).rjust(2,'0')+'_hrrrall.grib2'
-    file_name_temp_ingest = os.path.join(dir_data_model_raw_ingest, file_name)
+    #file_name = dt_init_utc.strftime('%Y%m%d%H')+'f'+str(hr).rjust(2,'0')+'_hrrrall.grib2'
+    #file_name_temp_ingest = os.path.join(dir_data_model_raw_ingest, file_name)
     # from gcp 
     # file_name_temp_ingest = os.path.join(dir_data_model_raw_ingest, 'hrrr.20181107_conus_hrrr.t12z.wrfsfcf27.grib2')
-        
+    # file_name_temp_ingest = os.path.join(dir_data_model_raw_ingest, 'hrrr.t00z.wrfsfcf01.grib2')
+    hr_diff = int(24*(dt_valid_temp - dt_init_utc).days) + int((dt_valid_temp - dt_init_utc).seconds/3600)
+    #print(hr_diff)
+    file_name =  'hrrr.t'+str(dt_init_utc.hour).rjust(2,'0')+'z.wrfsfcf'+str(hr_diff).rjust(2,'0')+'.grib2'
+    #print(file_name)
+    file_name_temp_ingest = os.path.join(dir_data_model_raw_ingest, file_name)
+
+    
     os.path.isfile(file_name_temp_ingest)    
     #if not (os.path.isfile(file_name_temp_ingest)) or (os.path.isfile(file_name_temp_archive)):
     if not (os.path.isfile(file_name_temp_ingest)):
@@ -466,49 +631,81 @@ for hr in range(0, n_hrs, 1):
         #sys.exit()
     else: # file exists
         # ds = xarray.open_dataset(file_name_temp_ingest, engine='cfgrib')
-        #ds_sfc = xarray.open_dataset(file_name_temp_ingest, engine='cfgrib',
-        #      backend_kwargs={'filter_by_keys': {'typeOfLevel': 'heightAboveGround', 'level': 'surface'}})
+        ds_sfc = xarray.open_dataset(file_name_temp_ingest, engine='cfgrib',
+             backend_kwargs={'filter_by_keys': {'stepType': 'instant', 'typeOfLevel': 'surface'}})
+        if not (initial_read):
+            lat_2d = numpy.array(ds_sfc['latitude'])
+            lon_2d = numpy.array(ds_sfc['longitude'])
+            lon_2d = lon_2d - 360.0        
+            
+            total_diff_2d = numpy.abs(lon_2d - lon_min) + numpy.abs(lat_2d - lat_min)
+            [j_loc_min, i_loc_min] = numpy.argwhere(total_diff_2d == numpy.min(total_diff_2d))[0]
+            total_diff_2d = numpy.abs(lon_2d - lon_max) + numpy.abs(lat_2d - lat_max)
+            [j_loc_max, i_loc_max] = numpy.argwhere(total_diff_2d == numpy.min(total_diff_2d))[0]
+            lon_2d = lon_2d[j_loc_min:j_loc_max, i_loc_min:i_loc_max]
+            lat_2d = lat_2d[j_loc_min:j_loc_max, i_loc_min:i_loc_max]
+            #hgt_2d = hgt_2d[j_loc_min:j_loc_max, i_loc_min:i_loc_max]
+            #hgt_2d = numpy.array(ds_sfc['orog'])
+            [ny, nx] = numpy.shape(lon_2d)
+            hgt_2d = numpy.array(ds_sfc['orog'][j_loc_min:j_loc_max, i_loc_min:i_loc_max])
+            ws10_2d_hr  = numpy.full([ny, nx, n_hrs], numpy.nan, dtype=float)
+            wsg10_2d_hr = numpy.full([ny, nx, n_hrs], numpy.nan, dtype=float)
+            rh2_2d_hr   = numpy.full([ny, nx, n_hrs], numpy.nan, dtype=float)
+            initial_read = True    
+        #rh2_2d    = numpy.array(ds_2m ['r2'])
+        #wsg10_2d  = numpy.array(ds_sfc['gust'])
+        #u_ws10_2d = numpy.array(ds_10m['u10'])
+        #v_ws10_2d = numpy.array(ds_10m['v10'])
+        wsg10_2d  = numpy.array(ds_sfc['gust'][j_loc_min:j_loc_max, i_loc_min:i_loc_max])
+        ds_sfc.close()
         ds_2m = xarray.open_dataset(file_name_temp_ingest, engine='cfgrib',
               backend_kwargs={'filter_by_keys': {'typeOfLevel': 'heightAboveGround', 'level': 2}})
+        rh2_2d    = numpy.array(ds_2m ['r2']  [j_loc_min:j_loc_max, i_loc_min:i_loc_max])
+        ds_2m.close()
         ds_10m = xarray.open_dataset(file_name_temp_ingest, engine='cfgrib',
              backend_kwargs={'filter_by_keys': {'typeOfLevel': 'heightAboveGround', 'level': 10}})
+        u_ws10_2d = numpy.array(ds_10m['u10'] [j_loc_min:j_loc_max, i_loc_min:i_loc_max])
+        v_ws10_2d = numpy.array(ds_10m['v10'] [j_loc_min:j_loc_max, i_loc_min:i_loc_max])
+        ds_10m.close()
+        ws10_2d = numpy.sqrt(u_ws10_2d**2.0 + v_ws10_2d**2.0)
+        ws10_2d_hr [:,:,hr] = ws10_2d 
+        wsg10_2d_hr[:,:,hr] = wsg10_2d 
+        rh2_2d_hr  [:,:,hr] = rh2_2d 
+        del u_ws10_2d, v_ws10_2d, ws10_2d, wsg10_2d, rh2_2d
+        
         #ds_sfc
         #ds_2m
         #ds_10m
-        if not (initial_read):
-            lon_2d = numpy.array(ds_10m['longitude'])
-            lat_2d = numpy.array(ds_10m['latitude'])
-            #hgt_2d = numpy.array(ds_sfc['orog'])
-            #hgt_2d = hgt_2d*3.28084 # m to ft
-            [ny, nx] = numpy.shape(lon_2d)
-            ws10_2d_hr  = numpy.full([ny, nx, n_hrs], numpy.nan, dtype=float)
-            wsg10_2d_hr = numpy.full([ny, nx, n_hrs], numpy.nan, dtype=float)
-            initial_read = True    
-        u_ws10_2d = numpy.array(ds_10m['u10'])
-        v_ws10_2d = numpy.array(ds_10m['v10'])
-        ws10_2d = numpy.sqrt(u_ws10_2d**2.0 + v_ws10_2d**2.0)
-        ws10_2d_hr [:,:,hr] = ws10_2d 
-        try:
-            #ds_sfc = xarray.open_dataset(file_name_temp_ingest, engine='cfgrib',
-            #     backend_kwargs={'filter_by_keys': {'typeOfLevel': 'surface'}})
-            ds_sfc = xarray.open_dataset(file_name_temp_ingest, engine='cfgrib',
-                 backend_kwargs={'filter_by_keys': {'stepType': 'instant', 'typeOfLevel': 'surface'}})
 
-            
-            wsg10_2d = numpy.array(ds_sfc['gust'])
-            wsg10_2d_hr[:,:,hr] = wsg10_2d 
-            hgt_2d = numpy.array(ds_sfc['orog'])
-            del wsg10_2d
-        except:
-            pass
-        del u_ws10_2d, v_ws10_2d, ws10_2d
-
-lon_2d = lon_2d - 360.0        
 print      ('read_data end')
 logger.info('read_data end')
 
 # read_model_data
 ###############################################################################
+
+
+#total_diff_2d = numpy.abs(lon_2d - lon_min) + numpy.abs(lat_2d - lat_min)
+#[j_loc_min, i_loc_min] = numpy.argwhere(total_diff_2d == numpy.min(total_diff_2d))[0]
+#total_diff_2d = numpy.abs(lon_2d - lon_max) + numpy.abs(lat_2d - lat_max)
+#[j_loc_max, i_loc_max] = numpy.argwhere(total_diff_2d == numpy.min(total_diff_2d))[0]
+#
+#lon_2d = lon_2d[j_loc_min:j_loc_max, i_loc_min:i_loc_max]
+#lat_2d = lat_2d[j_loc_min:j_loc_max, i_loc_min:i_loc_max]
+#hgt_2d = hgt_2d[j_loc_min:j_loc_max, i_loc_min:i_loc_max]
+#ws10_2d_hr  =  ws10_2d_hr[j_loc_min:j_loc_max, i_loc_min:i_loc_max,:]
+#wsg10_2d_hr = wsg10_2d_hr[j_loc_min:j_loc_max, i_loc_min:i_loc_max,:]
+#rh2_2d_hr   =   rh2_2d_hr[j_loc_min:j_loc_max, i_loc_min:i_loc_max,:]
+#
+
+#mask = ((lon_2d >= lon_min) & (lon_2d <= lon_max) & (lat_2d >= lat_min) & (lat_2d <= lat_max))
+#lon_2d = lon_2d[mask]
+#lat_2d = lat_2d[mask]
+
+#numpy.shape(lon_2d)
+#numpy.nanmin(lon_2d)
+#numpy.nanmax(lon_2d)
+#numpy.nanmin(lat_2d)
+#numpy.nanmax(lat_2d)
 
 
 ###############################################################################
@@ -519,10 +716,12 @@ logger.info('process_to_max begin')
 
 ws10_max_2d  = numpy.full([ny, nx], numpy.nan, dtype=float)
 wsg10_max_2d = numpy.full([ny, nx], numpy.nan, dtype=float)
+rh2_min_2d   = numpy.full([ny, nx], numpy.nan, dtype=float)
 for j in range(0, ny , 1):
     for i in range(0, nx, 1):
         ws10_max_2d [j,i] = numpy.nanmax( ws10_2d_hr[j,i,:])
         wsg10_max_2d[j,i] = numpy.nanmax(wsg10_2d_hr[j,i,:])
+        rh2_min_2d  [j,i] = numpy.nanmin(  rh2_2d_hr[j,i,:])
 
 print      ('process_to_max end')
 logger.info('process_to_max end')
@@ -553,17 +752,16 @@ if (write_max_model_data):
     hgt_2d_write = ncfile_write.createVariable('hgt_2d', numpy.dtype('float32').char,('y','x'))
     lon_2d_write [:] =  lon_2d
     lat_2d_write [:] =  lat_2d
-    try:
-        hgt_2d_write [:] =  hgt_2d
-    except:
-        pass
+    hgt_2d_write [:] =  hgt_2d
     
-    ws10_max_2d_write    = ncfile_write.createVariable('ws10_max_2d',  numpy.dtype('float32').char,('y','x'))
-    wsg10_max_2d_write   = ncfile_write.createVariable('wsg10_max_2d', numpy.dtype('float32').char,('y','x'))
+    ws10_max_2d_write  = ncfile_write.createVariable('ws10_max_2d',  numpy.dtype('float32').char,('y','x'))
+    wsg10_max_2d_write = ncfile_write.createVariable('wsg10_max_2d', numpy.dtype('float32').char,('y','x'))
+    rh2_min_2d_write   = ncfile_write.createVariable('rh2_min_2d',   numpy.dtype('float32').char,('y','x'))
     ws10_max_2d_write [:] =  ws10_max_2d[:,:]     
     wsg10_max_2d_write[:] = wsg10_max_2d[:,:]     
+    rh2_min_2d_write  [:] = wsg10_max_2d[:,:]     
 
-    del lon_2d_write, lat_2d_write, hgt_2d_write, ws10_max_2d_write, wsg10_max_2d_write
+    del lon_2d_write, lat_2d_write, hgt_2d_write, ws10_max_2d_write, wsg10_max_2d_write, rh2_min_2d_write
  
     ncfile_write.close()
 

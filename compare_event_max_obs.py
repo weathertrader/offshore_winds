@@ -355,7 +355,7 @@ plt.savefig(plot_name, dpi=dpi_level)
 #fig.clf()
 #plt.close()        
 
-# plot_ws_vs_stn_ele
+# scatter_event1_vs_event2
 ###############################################################################
 
 

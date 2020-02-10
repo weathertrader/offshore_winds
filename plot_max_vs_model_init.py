@@ -118,23 +118,46 @@ print      ('instantiate_logger end' )
 ###############################################################################
 # define event and inits to use 
 
+########################################
+event = '2019_10_27_event'
+# U 10/27 1 am PST - U 10/27 23:59 pm PST 
+dt_min_plot_utc_str = '2019-10-26_08'
+dt_max_plot_utc_str = '2019-10-29_08'
+dt_init_utc_start = dt(2019, 10, 24, 12)
+dt_init_utc_end   = dt(2019, 10, 28,  0)
+# hrrr
+# 2019-10-26_18 earliest, erase all before
+# 2019-10-27_00 best, retain on local
+# 2019-10-27_12 latest, erase all after 
+
+
 ######################################## 
-event = '2019_10_09_event'
+#event = '2018_10_14_event'
+# event max 2018/10/14 12 - 2018/10/15 12 PST 
+#dt_min_plot_utc_str = '2018-10-13_08'
+#dt_max_plot_utc_str = '2018-10-16_16'
+#dt_init_utc_start = dt(2018, 10, 13, 12)
+#dt_init_utc_end   = dt(2018, 10, 15, 12)
+
+######################################## 
+#event = '2018_11_08_event'
+# event max 2018-11-08_00 to 2018-11-09_00 PST
+#dt_min_plot_utc_str = '2018-11-06_08'
+#dt_max_plot_utc_str = '2018-11-10_16'
+#dt_init_utc_start = dt(2018, 11,  6, 12)
+#dt_init_utc_end   = dt(2018, 11,  9, 00)
+
+######################################## 
+#event = '2019_10_09_event'
 # W 10/09 6 am PST - R 10/10 6 pm PST 
-dt_min_plot_utc_str = '2019-10-09_08'
-dt_max_plot_utc_str = '2019-10-11_08'
-dt_init_utc_start = dt(2019, 10,  7,  0)
-dt_init_utc_end   = dt(2019, 10, 11,  0)
+#dt_min_plot_utc_str = '2019-10-09_08'
+#dt_max_plot_utc_str = '2019-10-11_08'
+#dt_init_utc_start = dt(2019, 10,  7,  0)
+#dt_init_utc_end   = dt(2019, 10, 11,  0)
 # hrrr
 # 2019-10-09_06 earliest, erase all before
 # 2019-10-09_12 best, retain on local
 # 2019-10-10_00 latest, erase all after
-# nam
-# 2019-10-07_00 earliest, erase all before
-# 2019-10-23_12 best, retain on local
-# 2019-10-10_00 latest, erase all after
-
-
 #model_name = 'hrrr'
 # earliest possible, ends 2019-10-10_10 PST 
 # dt_init_utc_str     = '2019-10-09_06'
@@ -142,16 +165,6 @@ dt_init_utc_end   = dt(2019, 10, 11,  0)
 #dt_init_utc_str     = '2019-10-09_12'
 # dt_init_utc_str     = '2019-10-09_18'
 # latest possible starts 2019-10-09_16
-# dt_init_utc_str     = '2019-10-10_00'
-#model_name = 'nam'
-# earliest possible, ends 2019-10-10_16 PST
-# dt_init_utc_str     = '2019-10-07_12'
-# dt_init_utc_str     = '2019-10-08_00'
-# dt_init_utc_str     = '2019-10-08_12'
-# dt_init_utc_str     = '2019-10-09_00'
-# best / retain on local
-# dt_init_utc_str     = '2019-10-09_12'
-# latest_posibble ends 2019-10-13_04 PST
 # dt_init_utc_str     = '2019-10-10_00'
 
 ######################################## 
@@ -165,30 +178,17 @@ dt_init_utc_end   = dt(2019, 10, 11,  0)
 # 2019-10-23_06 earliest, erase all before, or 10-23_12
 # 2019-10-23_12 best, retain on local, somehow missing 10-23_18 (can look for on gcp)
 # 2019-10-24_00 latest, erase all after, or 10-23_18 
-# nam
-# 2019-10-21_00 earliest, erase all before, or 10-21_12
-# 2019-10-23_12 best, retain on local
-# 2019-10-24_00 latest, erase all after, or 10-23_18 
-
-########################################
-#event = '2019_10_27_event'
-# U 10/27 1 am PST - U 10/27 23:59 pm PST 
-#dt_min_plot_utc_str = '2019-10-26_08'
-#dt_max_plot_utc_str = '2019-10-29_08'
-#dt_init_utc_start = dt(2019, 10, 24, 12)
-#dt_init_utc_end   = dt(2019, 10, 28,  0)
-# hrrr
-# 2019-10-26_18 earliest, erase all before
-# 2019-10-27_00 best, retain on local
-# 2019-10-27_12 latest, erase all after 
-# nam
-# 2019-10-25_00 earliest, erase all before
-# 2019-10-27_00 best, retain on local
-# 2019-10-28_00 latest, erase all after 
 
 
 
-model_list = ['hrrr', 'nam']
+
+
+
+
+
+
+model_list = ['hrrr']
+#model_list = ['hrrr', 'nam']
 n_models = len(model_list)
 
 interval_string = '6hr'
@@ -223,7 +223,6 @@ if (use_standalone_topo):
 ###############################################################################
 
 [ws_crit, wsgd_crit, wsgt_crit] = [25.0, 45.0, 55.0]
-
 
 ###############################################################################
 # read_model_data
@@ -324,9 +323,9 @@ fig = plt.figure(num=fig_num,figsize=(10,5))
 plt.clf()
 
 plt.plot(dt_axis_init_utc, ws10_mean_model_init [0,:], 'r', linestyle='-', label='ws hrrr',  linewidth=width_line, marker='o', markersize=size_marker, markeredgecolor='k') 
-plt.plot(dt_axis_init_utc, ws10_mean_model_init [1,:], 'b', linestyle='-', label='ws nam',  linewidth=width_line, marker='o', markersize=size_marker, markeredgecolor='k') 
+#plt.plot(dt_axis_init_utc, ws10_mean_model_init [1,:], 'b', linestyle='-', label='ws nam',  linewidth=width_line, marker='o', markersize=size_marker, markeredgecolor='k') 
 plt.plot(dt_axis_init_utc, wsg10_mean_model_init[0,:], 'g', linestyle='-', label='wsg hrrr',  linewidth=width_line, marker='o', markersize=size_marker, markeredgecolor='k') 
-plt.plot(dt_axis_init_utc, wsg10_mean_model_init[1,:], 'c', linestyle='-', label='wsg nam',  linewidth=width_line, marker='o', markersize=size_marker, markeredgecolor='k') 
+#plt.plot(dt_axis_init_utc, wsg10_mean_model_init[1,:], 'c', linestyle='-', label='wsg nam',  linewidth=width_line, marker='o', markersize=size_marker, markeredgecolor='k') 
 
 for dum in numpy.arange(wsg_min, wsg_max+wsg_int, wsg_int):
     plt.plot([dt_min_plot_utc-td(hours=24), dt_max_plot_utc+td(hours=24)], [dum, dum], 'gray', linestyle='-', linewidth=0.5, marker='o', markersize=0) 
@@ -359,8 +358,8 @@ plt.clf()
 plt.plot(dt_axis_init_utc, ws10_crit_model_init  [0,:], 'r', linestyle='-', label='ws hrrr',        linewidth=width_line, marker='o', markersize=size_marker, markeredgecolor='k') 
 plt.plot(dt_axis_init_utc, wsgd10_crit_model_init[0,:], 'b', linestyle='-', label='wsg dist hrrr',  linewidth=width_line, marker='o', markersize=size_marker, markeredgecolor='k') 
 #plt.plot(dt_axis_init_utc, wsgt10_crit_model_init[0,:], 'g', linestyle='-', label='wsg trans hrrr', linewidth=width_line, marker='o', markersize=size_marker, markeredgecolor='k') 
-plt.plot(dt_axis_init_utc, ws10_crit_model_init  [1,:], 'c', linestyle='-', label='ws nam',         linewidth=width_line, marker='o', markersize=size_marker, markeredgecolor='k') 
-plt.plot(dt_axis_init_utc, wsgd10_crit_model_init[1,:], 'm', linestyle='-', label='wsg dist nam',   linewidth=width_line, marker='o', markersize=size_marker, markeredgecolor='k') 
+#plt.plot(dt_axis_init_utc, ws10_crit_model_init  [1,:], 'c', linestyle='-', label='ws nam',         linewidth=width_line, marker='o', markersize=size_marker, markeredgecolor='k') 
+#plt.plot(dt_axis_init_utc, wsgd10_crit_model_init[1,:], 'm', linestyle='-', label='wsg dist nam',   linewidth=width_line, marker='o', markersize=size_marker, markeredgecolor='k') 
 #plt.plot(dt_axis_init_utc, wsgt10_crit_model_init[1,:], 'k', linestyle='-', label='wsg trans nam',  linewidth=width_line, marker='o', markersize=size_marker, markeredgecolor='k') 
 
 for dum in numpy.arange(wsg_min, wsg_max+wsg_int, wsg_int):

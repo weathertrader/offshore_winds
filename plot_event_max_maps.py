@@ -75,6 +75,7 @@ from remove_old_logs                import remove_old_logs
 from build_model_local_file_names                      import build_model_local_file_names
 from read_stn_metadata_from_csv import read_stn_metadata_from_csv
 from read_mesowest_api_csv_data import read_mesowest_api_csv_data
+from map_stn_locations_to_grid_locations import map_stn_locations_to_grid_locations
 
 os.chdir(dir_work) 
 print ('dir_work is %s'  % (os.getcwd())) 
@@ -335,30 +336,45 @@ if (manual_mode):
     # latest_possible ends
 
     ########################################
-    # blank template 
-    # 2019/10/27 U - obs not done, model init not done, data clean up not done, plots not done 
-    event = '2019_10_27_event'
+    # 2019/10/27 U event 
+    #event = '2019_10_27_event'
     # U 10/27 1 am PST - U 10/27 23:59 pm PST 
 
-    dt_min_plot_utc_str = '2019-10-26_08'
-    dt_max_plot_utc_str = '2019-10-29_08'
+    #dt_min_plot_utc_str = '2019-10-26_08'
+    #dt_max_plot_utc_str = '2019-10-29_08'
     # plotting 2019-10-09_00 - 2019-10-11_00 PST 
     #model_name = 'nam'
     # earliest possible, ends 
     # best / retain on local
     #dt_init_utc_str     = '2019-10-26_00'
     # latest_posibble ends
-    model_name = 'hrrr'
+    #model_name = 'hrrr'
     # earliest possible, ends 2019/10/27 16 PST
-    # best / retain on local
     #dt_init_utc_str     = '2019-10-26_12'
     # best / retain on local
-    dt_init_utc_str     = '2019-10-27_00'
-    # lasest possible start 2019/10/27 04 PST 
+    #dt_init_utc_str     = '2019-10-27_00'
+    # latest possible start 2019/10/27 04 PST 
     #dt_init_utc_str     = '2019-10-27_12'
-    # latest_posibble ends
-   
+    # latest_possible ends
+    
+    ########################################
+    # 2009/09/23 U event 
+    #event = '2006_09_23_event'
+    #dt_init_utc_str     = '2006-09-23_00'
+    #dt_min_plot_utc_str = '2006-09-21_08'
+    #dt_max_plot_utc_str = '2006-09-25_08'
+    #model_name = 'rasmussen'
+    
+    ########################################
+    # 2011/12/01 event 
+    event = '2011_12_01_event'
+    dt_init_utc_str     = '2011-12-01_00'
+    model_name = 'rasmussen'
+    dt_min_plot_utc_str = '2011-11-30_08'
+    dt_max_plot_utc_str = '2011-12-02_08'
+          
 else:        
+    
     parser = argparse.ArgumentParser(description='model to use')
     parser.add_argument('--model_name', type=str, help='model_name', required=True)    
     parser.add_argument('--dt_init_utc_str', type=str, help='dt_init_utc_str', required=True)    
@@ -415,6 +431,8 @@ if   (model_name == 'hrrr'):
     model_forecast_horizon = 36 
 elif (model_name == 'nam'):
     model_forecast_horizon = 84
+elif (model_name == 'rasmussen'):
+    model_forecast_horizon = 72
 
 dt_model_initial_pst = dt_init_utc - td(hours=utc_conversion)
 dt_model_final_pst   = dt_model_initial_pst + td(hours=model_forecast_horizon)
@@ -486,7 +504,8 @@ wd_ticks = numpy.arange(wd_min, wd_max+wd_int, wd_int)
 plot_time_series = True
 plot_maps = True 
 print_stn_info = True
-use_stn = 'all' 
+#use_stn = 'all' 
+use_stn = 'mnet=1,2' # NWS, RAWS 
 
 # flags 
 ###############################################################################
@@ -570,6 +589,9 @@ replace_nan_with_null = False
 s = 217 # concow road
 s = 610 # mt st helena west
 s = 360 # HWKC1
+s = 172 # KNXC1
+s = 198 # JBGC1
+
 
 #for s in range(45, 46, 1): 
 for s in range(0, dict_stn_metadata['n_stn'], 1): 
@@ -692,7 +714,8 @@ for s in range(0, dict_stn_metadata['n_stn'], 1):
 ###############################################################################
 # plot_ws_vs_stn_ele
 
-plot_ws_vs_stn_ele = True
+#plot_ws_vs_stn_ele = True
+plot_ws_vs_stn_ele = False
 
 if (plot_ws_vs_stn_ele):
 
@@ -807,9 +830,10 @@ states_provinces = cfeature.NaturalEarthFeature(category='cultural',
                                                 facecolor='none')
 
 
-width_roads = 2.0
+width_roads = 1.0
 
 plot_area = ['nor_ca', 'nor_bay', 'nor_sierra','bay', 'cen_sierra', 'nor_valley', 'nor_coast']
+#plot_area = ['nor_bay']
 n_areas = len(plot_area)
 
 
@@ -818,7 +842,9 @@ n_areas = len(plot_area)
 ###############################################################################
 # plot_ws_max_maps_obs_only 
 
-plot_ws_max_maps_obs_only = True
+#plot_ws_max_maps_obs_only = True
+plot_ws_max_maps_obs_only = False
+
 if (plot_ws_max_maps_obs_only): 
 
     plot_legend = True
@@ -1074,8 +1100,14 @@ if not (initial_read):
     hgt_2d = hgt_2d*3.28084 # m to ft
 
     initial_read = True
-wsg10_max_2d = numpy.array(ncfile_read.variables['wsg10_max_2d'])
+    
+
 ws10_max_2d  = numpy.array(ncfile_read.variables[ 'ws10_max_2d'])
+if not (model_name == 'rasmussen'):
+    wsg10_max_2d = numpy.array(ncfile_read.variables['wsg10_max_2d'])
+else:
+    wsg10_max_2d = 1.6*ws10_max_2d
+
 ncfile_read.close()
 print      (' read file end ') 
 logger.info(' read file end ') 
@@ -1169,7 +1201,7 @@ for a in range(0, n_areas, 1):
          
     [figsize_x, figsize_y] = [8, 8]
         
-    fig = plt.figure(num=110,figsize=(figsize_x, figsize_y)) # 10x5, 10x6, 10x10 
+    fig = plt.figure(num=120,figsize=(figsize_x, figsize_y)) # 10x5, 10x6, 10x10 
     plt.clf()
     ax = plt.axes(projection=ccrs.PlateCarree())
     #ax = plt.axes(projection=ccrs.LambertConformal())
@@ -1384,7 +1416,54 @@ for a in range(0, n_areas, 1):
     #fig.clf()
     #plt.close()        
     
-# plot 
+# plot maps
+###############################################################################
+
+
+###############################################################################
+# scatter obs vs modeled at stn locations
+
+print_flag = True
+(j_loc_s, i_loc_s) = map_stn_locations_to_grid_locations(logger, dict_stn_metadata, lon_2d, lat_2d, print_flag)
+
+ws10_max_s = ws10_max_2d[j_loc_s, i_loc_s]
+numpy.shape(ws10_max_s)
+numpy.shape(ws_max_obs_s)
+
+
+#[ ws_min,  ws_max,  ws_int] = [0.0,  110.0,  10.0]
+[ ws_min,  ws_max,  ws_int] = [0.0,  60.0,  5.0]
+ws_ticks = numpy.arange(ws_min,ws_max+ws_int,ws_int)
+
+
+
+fig = plt.figure(num=301,figsize=(figsize_x, figsize_y)) # 10x5, 10x6, 10x10 
+plt.clf()
+plt.scatter(ws_max_obs_s, ws10_max_s, s=40,marker='o',color='r', edgecolor='k',alpha=0.5)
+for dum in numpy.arange(ws_min, ws_max+ws_int, ws_int):
+    plt.plot([ws_min, ws_max], [dum, dum], 'gray', linestyle='-', linewidth=0.5, marker='o', markersize=0) 
+    plt.plot([dum, dum], [ws_min, ws_max], 'gray', linestyle='-', linewidth=0.5, marker='o', markersize=0) 
+plt.plot([ws_min, ws_max], [ws_min, ws_max], 'k', linestyle='-', linewidth=2.0, marker='o', markersize=0) 
+
+plt.xticks(ws_ticks, fontsize=14)
+plt.yticks(ws_ticks, fontsize=14)
+plt.xlim([ws_min, ws_max])
+plt.ylim([ws_min, ws_max])
+plt.xlabel('observed ws [mph]', fontsize=14, labelpad=0) # 10 is too small, 20 
+plt.ylabel('modeled ws [mph]', fontsize=14, labelpad=0) # 10 is too small, 20 
+plt.title('%s event max obs vs mod' % (event) , \
+    fontsize=16, loc='left', weight = 'bold')   
+plt.show()
+plt.tight_layout()
+filename = 'scatter_ws_max_obs_vs_mod_event_%s.png' % (event)
+plot_name = os.path.join(dir_work, 'figs_ws_scatter', filename) 
+dpi_level = 400 # 400        
+#plt.savefig(plot_name)
+plt.savefig(plot_name, dpi=dpi_level) 
+#fig.clf()
+#plt.close()        
+
+# scatter obs vs modeled at stn locations
 ###############################################################################
 
 

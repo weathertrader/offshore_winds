@@ -42,6 +42,22 @@ import xarray
 from netCDF4 import Dataset 
 
 
+
+import shapely
+# does not work 
+# import fiona
+
+
+dir_work = '/home/craigmatthewsmith/projects/'+project_name
+os.chdir(dir_work) 
+
+
+dir_shp = os.path.join(dir_work, 'psps_polygons')
+
+
+shp_name = 'PUBLIC_PSPS 10-09-19 C-03_BaseLine_1007_1655'
+
+
 import matplotlib
 #if (manual_mode): 
 #    matplotlib.use('Agg') 
@@ -77,7 +93,6 @@ from read_stn_metadata_from_csv import read_stn_metadata_from_csv
 from read_mesowest_api_csv_data import read_mesowest_api_csv_data
 from define_datetime_axis import define_datetime_axis
 
-os.chdir(dir_work) 
 print ('dir_work is %s'  % (os.getcwd())) 
 dir_data_sfc_obs = os.path.join(dir_data_base, 'sfc_obs')
 dir_data_model   = os.path.join(dir_data_base, 'model_data')
