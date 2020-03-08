@@ -178,12 +178,12 @@ if (manual_mode):
     ########################################
     # 2018/11/08 - obs done, model init done, data clean up not done, plots not done 
     # model data avail, hrrr only, 2018_11_07_12, 2018_11_08_00
-    #event = '2018_11_08_event'
+    event = '2018_11_08_event'
     # PSPS was not 2018/11/08 R 
     #plotting  2018-11-06_00 to 2018-11-10_08 PST
     #event max 2018-11-08_00 to 2018-11-09_00 PST
-    #dt_min_plot_utc_str = '2018-11-06_08'
-    #dt_max_plot_utc_str = '2018-11-10_16'
+    dt_min_plot_utc_str = '2018-11-06_08'
+    dt_max_plot_utc_str = '2018-11-10_16'
     #model_name = 'nam'
     # earliest possible, ends 2018-11-08_16 PST
     #dt_init_utc_str     = '2018-11-05_12'
@@ -193,11 +193,11 @@ if (manual_mode):
     #dt_init_utc_str     = '2018-11-07_12'
     # latest possible,   starts 2018-11-07_14 PST 
     #dt_init_utc_str     = '2018-11-08_00'
-    #model_name = 'hrrr' 
+    model_name = 'hrrr' 
     # earliest possible, ends 2018-11-08_12 PST
     #dt_init_utc_str     = '2018-11-07_06'
     # done
-    #dt_init_utc_str     = '2018-11-07_12'
+    dt_init_utc_str     = '2018-11-07_12'
     #dt_init_utc_str     = '2018-11-07_18'
     # done 
     #dt_init_utc_str     = '2018-11-08_00'
@@ -367,11 +367,11 @@ if (manual_mode):
     
     ########################################
     # 2011/12/01 event 
-    event = '2011_12_01_event'
-    dt_init_utc_str     = '2011-12-01_00'
-    model_name = 'rasmussen'
-    dt_min_plot_utc_str = '2011-11-30_08'
-    dt_max_plot_utc_str = '2011-12-02_08'
+    #event = '2011_12_01_event'
+    #dt_init_utc_str     = '2011-12-01_00'
+    #model_name = 'rasmussen'
+    #dt_min_plot_utc_str = '2011-11-30_08'
+    #dt_max_plot_utc_str = '2011-12-02_08'
           
 else:        
     
@@ -504,8 +504,8 @@ wd_ticks = numpy.arange(wd_min, wd_max+wd_int, wd_int)
 plot_time_series = True
 plot_maps = True 
 print_stn_info = True
-#use_stn = 'all' 
-use_stn = 'mnet=1,2' # NWS, RAWS 
+use_stn = 'all' 
+#use_stn = 'mnet=1,2' # NWS, RAWS 
 
 # flags 
 ###############################################################################
@@ -590,14 +590,14 @@ s = 217 # concow road
 s = 610 # mt st helena west
 s = 360 # HWKC1
 s = 172 # KNXC1
-s = 198 # JBGC1
-
+s = 429 # JBGC1
+s = 945 # PG131 Stirling Road
 
 #for s in range(45, 46, 1): 
 for s in range(0, dict_stn_metadata['n_stn'], 1): 
-    #if ('PG328' in dict_stn_metadata['stn_id'][s]):
-    print      ('  processing s %s, s = %s of %s ' % (dict_stn_metadata['stn_id'][s], s, dict_stn_metadata['n_stn']))  
-    logger.info('  processing s %s, s = %s of %s ' % (dict_stn_metadata['stn_id'][s], s, dict_stn_metadata['n_stn']))  
+    if ('JBGC1' in dict_stn_metadata['stn_id'][s]):
+        print      ('  processing s %s, s = %s of %s ' % (dict_stn_metadata['stn_id'][s], s, dict_stn_metadata['n_stn']))  
+        logger.info('  processing s %s, s = %s of %s ' % (dict_stn_metadata['stn_id'][s], s, dict_stn_metadata['n_stn']))  
     #print(s)
     file_name_full_path = os.path.join(dir_data_sfc_obs, event, 'stn_obs_'+dict_stn_metadata['stn_id'][s]+'.csv')    
     if not os.path.isfile(file_name_full_path):
@@ -790,10 +790,10 @@ if (use_standalone_topo):
     file_name_temp_ingest = os.path.join(dir_work, 'nam_static.grib2')
     ds_sfc = xarray.open_dataset(file_name_temp_ingest, engine='cfgrib',
          backend_kwargs={'filter_by_keys': {'typeOfLevel': 'surface'}})
-    lon_static_2d = numpy.array(ds_sfc['longitude'])
-    lat_static_2d = numpy.array(ds_sfc['latitude'])
-    hgt_static_2d = numpy.array(ds_sfc['orog'])
-    hgt_static_2d = hgt_static_2d*3.28084 # m to ft
+    lon_2d = numpy.array(ds_sfc['longitude'])
+    lat_2d = numpy.array(ds_sfc['latitude'])
+    hgt_2d = numpy.array(ds_sfc['orog'])
+    hgt_2d = hgt_2d*3.28084 # m to ft
 
 # read_topo 
 ###############################################################################
@@ -851,7 +851,6 @@ if (plot_ws_max_maps_obs_only):
     
     a = 0
     a = 1
-    # dont do
     a = 2
     a = 3
     a = 4
@@ -930,7 +929,7 @@ if (plot_ws_max_maps_obs_only):
             shape_feature = ShapelyFeature(shapereader.Reader(shape_file_name).geometries(), ccrs.PlateCarree())
             ax.add_feature(shape_feature, edgecolor='m', linewidth=1.0, facecolor='none')
     
-        hgt_lines = plt.contour (lon_static_2d, lat_static_2d, hgt_static_2d, levels=numpy.arange(hgt_min, hgt_max, hgt_int), colors='gray', linestyles='solid', linewidths=0.5)
+        hgt_lines = plt.contour (lon_2d, lat_2d, hgt_2d, levels=numpy.arange(hgt_min, hgt_max, hgt_int), colors='gray', linestyles='solid', linewidths=0.5)
     
         # plot sfc obs
         alpha_level = 1.0 # 0.3
@@ -1018,7 +1017,7 @@ if (plot_ws_max_maps_obs_only):
             shape_feature = ShapelyFeature(shapereader.Reader(shape_file_name).geometries(), ccrs.PlateCarree())
             ax.add_feature(shape_feature, edgecolor='m', linewidth=1.0, facecolor='none')
         
-        hgt_lines = plt.contour (lon_static_2d, lat_static_2d, hgt_static_2d, levels=numpy.arange(hgt_min, hgt_max, hgt_int), colors='gray', linestyles='solid', linewidths=0.5)
+        hgt_lines = plt.contour (lon_2d, lat_2d, hgt_2d, levels=numpy.arange(hgt_min, hgt_max, hgt_int), colors='gray', linestyles='solid', linewidths=0.5)
      
         # plot sfc_obs
         alpha_level = 1.0 # 0.3
@@ -1226,7 +1225,7 @@ for a in range(0, n_areas, 1):
         shape_feature = ShapelyFeature(shapereader.Reader(shape_file_name).geometries(), ccrs.PlateCarree())
         ax.add_feature(shape_feature, edgecolor='m', linewidth=1.0, facecolor='none')
 
-    #hgt_lines = plt.contour (lon_static_2d, lat_static_2d, hgt_static_2d, levels=numpy.arange(hgt_min, hgt_max, hgt_int), colors='gray', linestyles='solid', linewidths=0.5)
+    #hgt_lines = plt.contour (lon_2d, lat_2d, hgt_2d, levels=numpy.arange(hgt_min, hgt_max, hgt_int), colors='gray', linestyles='solid', linewidths=0.5)
     hgt_lines = plt.contour (lon_2d, lat_2d, hgt_2d, levels=numpy.arange(hgt_min, hgt_max, hgt_int), colors='gray', linestyles='solid', linewidths=0.5)
     im = plt.contourf(lon_2d, lat_2d, ws10_max_2d, numpy.arange(ws_min, ws_max, ws_int), cmap=cmap_ws, transform=ccrs.PlateCarree()) # jet, viridis 
     #ws_lines = plt.contour(lon_2d, lat_2d, ws10_max_2d, levels = numpy.arange(ws_min, ws_max, ws_int), colors='k', linestyles='solid', linewidths=0.5)
@@ -1306,7 +1305,7 @@ for a in range(0, n_areas, 1):
     #plt.close()        
 
     
-    fig = plt.figure(num=111,figsize=(figsize_x, figsize_y)) # 10x5, 10x6, 10x10 
+    fig = plt.figure(num=121,figsize=(figsize_x, figsize_y)) # 10x5, 10x6, 10x10 
     plt.clf()
     ax = plt.axes(projection=ccrs.PlateCarree())
     #ax = plt.axes(projection=ccrs.LambertConformal())
@@ -1335,7 +1334,7 @@ for a in range(0, n_areas, 1):
         shape_feature = ShapelyFeature(shapereader.Reader(shape_file_name).geometries(), ccrs.PlateCarree())
         ax.add_feature(shape_feature, edgecolor='m', linewidth=1.0, facecolor='none')
     
-    #hgt_lines = plt.contour (lon_static_2d, lat_static_2d, hgt_static_2d, levels=numpy.arange(hgt_min, hgt_max, hgt_int), colors='gray', linestyles='solid', linewidths=0.5)
+    #hgt_lines = plt.contour (lon_2d, lat_2d, hgt_2d, levels=numpy.arange(hgt_min, hgt_max, hgt_int), colors='gray', linestyles='solid', linewidths=0.5)
     hgt_lines = plt.contour (lon_2d, lat_2d, hgt_2d, levels=numpy.arange(hgt_min, hgt_max, hgt_int), colors='gray', linestyles='solid', linewidths=0.5)
     im = plt.contourf(lon_2d, lat_2d, wsg10_max_2d, numpy.arange(wsg_min, wsg_max, wsg_int), cmap=cmap_wsg, transform=ccrs.PlateCarree()) # jet, viridis 
     #wsg_lines = plt.contour(lon_2d, lat_2d, wsg10_max_2d, levels = numpy.arange(wsg_min, wsg_max, wsg_int), colors='k', linestyles='solid', linewidths=0.5)
@@ -1434,8 +1433,6 @@ numpy.shape(ws_max_obs_s)
 #[ ws_min,  ws_max,  ws_int] = [0.0,  110.0,  10.0]
 [ ws_min,  ws_max,  ws_int] = [0.0,  60.0,  5.0]
 ws_ticks = numpy.arange(ws_min,ws_max+ws_int,ws_int)
-
-
 
 fig = plt.figure(num=301,figsize=(figsize_x, figsize_y)) # 10x5, 10x6, 10x10 
 plt.clf()
